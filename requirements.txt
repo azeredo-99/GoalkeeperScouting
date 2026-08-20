@@ -16,5 +16,11 @@ requests>=2.34,<3
 statsbombpy>=1.22,<2
 streamlit>=1.61,<2
 
+# Persistência (PostgreSQL). Versões não verificadas por falta de Docker
+# neste ambiente -- ver nota na Fase 1 sobre validação pendente.
+alembic>=1.13,<2
+psycopg2-binary>=2.9,<3
+sqlalchemy>=2.0,<3
+
 # Desenvolvimento (não necessário para executar a aplicação).
 pytest>=9.1,<10

@@ -35,6 +35,13 @@ NON_SAVE_SHOT_TYPES = (
 )
 
 
+# Colunas que identificam competicao/epoca num dataset multi-competicao
+# (ver download_extended_data.py). Passadas a build_scouting_table() via
+# `context_columns` para evitar agregar o mesmo jogador entre competicoes
+# ou epocas diferentes.
+CONTEXT_COLUMNS = ("competition_id", "season_id")
+
+
 # ---------------------------------------------------------------------------
 # Relogio regulamentar
 # ---------------------------------------------------------------------------
@@ -745,31 +752,15 @@ def distribution_metrics(
     )
 
 
-def build_scouting_table(
-    events: pd.DataFrame,
-    gk_events: pd.DataFrame,
-    gk_passes: pd.DataFrame,
-) -> pd.DataFrame:
+def _finalize_table(minutes, sweeper, shots, dist) -> pd.DataFrame:
     """
-    Junta todas as métricas numa única tabela por guarda-redes.
+    Junta as quatro peças de métricas numa única tabela por jogador.
+
+    Extraído de build_scouting_table() para ser reutilizado tanto no
+    agregado normal (uma linha por jogador) como em cada fatia de
+    competição/época, sem duplicar a lógica de montagem nem o cálculo
+    dos p90.
     """
-
-    minutes = compute_minutes_played(
-        events,
-        gk_events,
-    )
-
-    sweeper = sweeper_keeper_metrics(
-        gk_events,
-    )
-
-    shots = shot_stopping_metrics(
-        gk_events,
-    )
-
-    dist = distribution_metrics(
-        gk_passes,
-    )
 
     table = pd.concat(
         [
@@ -801,6 +792,118 @@ def build_scouting_table(
             * 90
         ),
         np.nan,
+    )
+
+    return table
+
+
+def build_scouting_table(
+    events: pd.DataFrame,
+    gk_events: pd.DataFrame,
+    gk_passes: pd.DataFrame,
+    context_columns=None,
+) -> pd.DataFrame:
+    """
+    Junta todas as métricas numa única tabela por guarda-redes.
+
+    Por omissão (`context_columns=None`) o comportamento é idêntico ao
+    anterior a esta alteração: uma linha por jogador, agregando tudo o
+    que existir em `events`/`gk_events`/`gk_passes`. Isto significa que,
+    num dataset que abrange várias competições ou épocas, um guarda-redes
+    presente em mais do que uma fica com uma única linha que MISTURA os
+    contextos -- é esse o comportamento histórico, preservado aqui de
+    propósito para não alterar a aplicação existente.
+
+    Para evitar essa mistura, passa `context_columns` (por exemplo
+    `CONTEXT_COLUMNS`, ou seja `("competition_id", "season_id")`). Nesse
+    caso a tabela passa a ter um índice `MultiIndex` de
+    `(player, *context_columns)`, com uma linha por combinação realmente
+    observada. As quatro funções de métricas (`compute_minutes_played`,
+    `sweeper_keeper_metrics`, `shot_stopping_metrics`,
+    `distribution_metrics`) não são alteradas: são chamadas, sem
+    modificação, uma vez por cada fatia de eventos filtrada por
+    `match_id`.
+
+    Se nenhuma das colunas pedidas em `context_columns` existir em
+    `events` (por exemplo `events_full_wc2022.pkl`, que não tem
+    competição/época porque é de uma só competição), esta função
+    degrada-se de forma explícita para o comportamento por omissão --
+    NÃO levanta erro, e devolve a mesma tabela de sempre, com índice
+    simples por jogador.
+    """
+
+    available_context = [
+        column
+        for column in (context_columns or [])
+        if column in events.columns
+    ]
+
+    if not available_context:
+        minutes = compute_minutes_played(events, gk_events)
+        sweeper = sweeper_keeper_metrics(gk_events)
+        shots = shot_stopping_metrics(gk_events)
+        dist = distribution_metrics(gk_passes)
+
+        table = _finalize_table(minutes, sweeper, shots, dist)
+
+        return table.sort_values(
+            "minutes",
+            ascending=False,
+        )
+
+    # match_id identifica univocamente um (competition_id, season_id) --
+    # por isso a fonte de verdade do contexto e sempre `events`, nunca
+    # gk_events/gk_passes (que podem ter sido gerados por um loader mais
+    # antigo sem essas colunas).
+    match_context = (
+        events[["match_id", *available_context]]
+        .drop_duplicates(subset="match_id")
+    )
+
+    groups = (
+        match_context
+        .groupby(available_context, sort=False)["match_id"]
+        .apply(list)
+    )
+
+    slices = []
+
+    for combo, match_ids in groups.items():
+        if not isinstance(combo, tuple):
+            combo = (combo,)
+
+        match_ids = set(match_ids)
+
+        events_slice = events[events["match_id"].isin(match_ids)]
+        gk_events_slice = gk_events[gk_events["match_id"].isin(match_ids)]
+        gk_passes_slice = gk_passes[gk_passes["match_id"].isin(match_ids)]
+
+        minutes = compute_minutes_played(events_slice, gk_events_slice)
+        sweeper = sweeper_keeper_metrics(gk_events_slice)
+        shots = shot_stopping_metrics(gk_events_slice)
+        dist = distribution_metrics(gk_passes_slice)
+
+        slice_table = _finalize_table(minutes, sweeper, shots, dist)
+
+        if slice_table.empty:
+            continue
+
+        for column, value in zip(available_context, combo):
+            slice_table[column] = value
+
+        slices.append(slice_table)
+
+    if not slices:
+        empty_index = pd.MultiIndex.from_tuples(
+            [],
+            names=["player", *available_context],
+        )
+        return pd.DataFrame(index=empty_index)
+
+    table = (
+        pd.concat(slices, axis=0)
+        .reset_index()
+        .set_index(["player", *available_context])
     )
 
     return table.sort_values(
