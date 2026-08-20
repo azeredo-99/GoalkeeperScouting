@@ -6,7 +6,9 @@ import re
 import pandas as pd
 import requests
 
-from data_loader import load_competition_events
+import _bootstrap  # noqa: F401  (coloca src/ no sys.path)
+
+from gk_scouting.data_loader import load_competition_events
 
 COMPETITIONS_URL = (
     "https://raw.githubusercontent.com/statsbomb/open-data/master/data/competitions.json"

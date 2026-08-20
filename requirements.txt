@@ -1,7 +1,26 @@
-statsbombpy
-pandas
-numpy
-matplotlib
-mplsoccer
-streamlit
-pytest
+# Dependências de execução.
+#
+# Os limites inferiores são as versões contra as quais o projeto foi
+# efetivamente verificado (suite de testes a passar), não estimativas.
+# O limite superior fica no próximo major para que uma atualização não
+# parta o projeto silenciosamente.
+#
+# Se precisares de suportar versões mais antigas (por exemplo pandas 2.x),
+# baixa o limite inferior só depois de a suite passar nessa versão.
+
+matplotlib>=3.11,<4
+mplsoccer>=1.8,<2
+numpy>=2.5,<3
+pandas>=3.0,<4
+requests>=2.34,<3
+statsbombpy>=1.22,<2
+streamlit>=1.61,<2
+
+# Persistência (PostgreSQL). Versões não verificadas por falta de Docker
+# neste ambiente -- ver nota na Fase 1 sobre validação pendente.
+alembic>=1.13,<2
+psycopg2-binary>=2.9,<3
+sqlalchemy>=2.0,<3
+
+# Desenvolvimento (não necessário para executar a aplicação).
+pytest>=9.1,<10

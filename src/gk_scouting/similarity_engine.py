@@ -39,6 +39,54 @@ DIMENSION_FEATURES = {
 }
 
 
+# Um jogo completo. Serve de unidade para arredondar limiares de minutos,
+# para os defaults cairem em numeros que um scout le como "N jogos".
+MATCH_MINUTES = 90
+
+# Limiar minimo absoluto quando a amostra nao permite calcular um percentil.
+MIN_MINUTES_FLOOR = 90
+
+
+def default_min_minutes(minutes) -> int:
+    """
+    Escolhe um limiar de minutos a partir da distribuicao real da amostra.
+
+    Regra: percentil 25 arredondado para baixo ao multiplo de 90.
+
+    Porque o percentil 25: mantem cerca de tres quartos da amostra elegivel,
+    o que garante que a funcionalidade apresenta candidatos na primeira
+    utilizacao, sem deixar entrar guarda-redes com amostras minusculas.
+    Porque arredondado a 90: um limiar de "270 minutos" le-se como tres
+    jogos; "286 minutos" nao se le como nada.
+
+    Um valor fixo nao serve porque as amostras diferem muito entre datasets:
+    no Mundial 2022 o percentil 25 e 286 minutos, no dataset multi-competicao
+    e 190. Um default de 720 (o valor anterior) deixava 2 dos 41
+    guarda-redes do Mundial elegiveis.
+    """
+
+    values = pd.to_numeric(
+        pd.Series(minutes),
+        errors="coerce",
+    ).dropna()
+
+    if values.empty:
+        return MIN_MINUTES_FLOOR
+
+    p25 = float(
+        values.quantile(0.25)
+    )
+
+    floored = int(
+        p25 // MATCH_MINUTES * MATCH_MINUTES
+    )
+
+    return max(
+        MIN_MINUTES_FLOOR,
+        floored,
+    )
+
+
 FEATURE_LABELS = {
     "sweeper_actions_p90": "proatividade a sair da baliza",
     "avg_distance_from_goal": "distância média da baliza",
@@ -104,14 +152,35 @@ def _robust_zscore(table, features):
     )
 
 
-def _normalise_dimension_weights(dimension_weights=None):
-    defaults = {
-        "Shot Stopping": 30.0,
-        "Distribution": 35.0,
-        "Proactivity": 35.0,
-    }
+DEFAULT_DIMENSION_WEIGHTS = {
+    "Shot Stopping": 30.0,
+    "Distribution": 35.0,
+    "Proactivity": 35.0,
+}
 
-    source = defaults if dimension_weights is None else dimension_weights
+
+def normalise_dimension_weights(dimension_weights=None):
+    """
+    Converte pesos em bruto na proporcao efetivamente usada no calculo.
+
+    Os pesos sao sempre divididos pela soma, por isso 30/35/35 e 10/10/10
+    NAO sao equivalentes -- mas 30/35/35 e 60/70/70 sao. O que conta e a
+    proporcao entre dimensoes, nunca o valor absoluto nem quanto falta
+    para 100. Esta funcao e publica precisamente para a interface poder
+    mostrar ao utilizador a proporcao real em vez do que ele escreveu.
+
+    Devolve um dicionario cujos valores somam 1.0.
+
+    Erros:
+        ValueError se algum peso for negativo, ou se a soma for zero
+        (nesse caso nao existe qualquer dimensao para comparar).
+    """
+
+    source = (
+        DEFAULT_DIMENSION_WEIGHTS
+        if dimension_weights is None
+        else dimension_weights
+    )
 
     values = {}
 
@@ -123,7 +192,13 @@ def _normalise_dimension_weights(dimension_weights=None):
         except (TypeError, ValueError):
             value = 0.0
 
-        values[dimension] = max(0.0, value)
+        if value < 0:
+            raise ValueError(
+                f"O peso de '{dimension}' nao pode ser negativo "
+                f"(recebido: {value})."
+            )
+
+        values[dimension] = value
 
     total = sum(values.values())
 
@@ -142,7 +217,7 @@ def _effective_feature_weights(
     available_features,
     dimension_weights=None,
 ):
-    dimensions = _normalise_dimension_weights(
+    dimensions = normalise_dimension_weights(
         dimension_weights
     )
 

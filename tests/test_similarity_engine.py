@@ -1,6 +1,6 @@
 import pandas as pd
 
-from similarity_engine import find_similar_goalkeepers
+from gk_scouting.similarity_engine import find_similar_goalkeepers
 
 
 def make_table():

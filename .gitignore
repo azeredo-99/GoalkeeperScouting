@@ -19,6 +19,9 @@ output/*
 # Streamlit
 .streamlit/secrets.toml
 
+# Database (segredos locais de ligação; ver .env.example)
+.env
+
 # VS Code local settings
 .vscode/
 

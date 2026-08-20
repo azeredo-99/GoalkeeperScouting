@@ -17,11 +17,14 @@ Para adaptar a outra competição, basta mudar COMPETITION_ID / SEASON_ID
 """
 
 import os
-from data_loader import load_competition_events, build_gk_events, build_gk_passes
-from metrics import build_scouting_table
-from visuals import plot_radar, plot_sweeper_map
-from similarity_engine import find_similar_goalkeepers, explain_similarity
-from readable_report import build_readable_table, build_scouting_report, build_similarity_report, build_full_table_report
+
+import _bootstrap  # noqa: F401  (coloca src/ no sys.path)
+
+from gk_scouting.data_loader import load_competition_events, build_gk_events, build_gk_passes
+from gk_scouting.metrics import build_scouting_table
+from gk_scouting.visuals import plot_radar, plot_sweeper_map
+from gk_scouting.similarity_engine import find_similar_goalkeepers, explain_similarity
+from gk_scouting.readable_report import build_readable_table, build_scouting_report, build_similarity_report, build_full_table_report
 
 # ---- CONFIGURAÇÃO ---------------------------------------------------------
 COMPETITION_ID = 43   # FIFA World Cup

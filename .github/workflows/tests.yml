@@ -1,0 +1,24 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Sem `lfs: true` de propósito: o dataset em Git LFS tem 286 MB, os
+      # testes não precisam dele e descarregá-lo em cada execução gastaria a
+      # quota de largura de banda LFS. O único teste que o usa deteta o
+      # ficheiro-ponteiro e faz skip.
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - run: pip install -r requirements.txt
+
+      - run: pytest

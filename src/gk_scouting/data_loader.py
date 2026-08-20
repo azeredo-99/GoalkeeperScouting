@@ -100,10 +100,16 @@ def build_gk_events(events: pd.DataFrame) -> pd.DataFrame:
         gk = _split_location(gk, "goalkeeper_end_location", "end_x", "end_y")
 
     keep_cols = [
-        "match_id", "player", "team", "minute", "second",
+        "match_id", "player", "player_id", "team", "minute", "second",
         "x", "y", "end_x", "end_y",
         "goalkeeper_type", "goalkeeper_outcome",
         "goalkeeper_technique", "goalkeeper_body_part", "goalkeeper_position",
+        # Presentes apenas quando o dataset abrange varias competicoes/epocas
+        # (ver download_extended_data.py). Preservadas aqui para permitir
+        # agregar por contexto em build_scouting_table() e para consumo
+        # direto por uma futura API. Ausentes em datasets de competicao
+        # unica (ex.: events_full_wc2022.pkl) -- por isso o filtro abaixo.
+        "competition_id", "season_id", "competition_name",
     ]
     keep_cols = [c for c in keep_cols if c in gk.columns]
     return gk[keep_cols].reset_index(drop=True)
@@ -120,10 +126,12 @@ def build_gk_passes(events: pd.DataFrame) -> pd.DataFrame:
         passes = _split_location(passes, "pass_end_location", "end_x", "end_y")
 
     keep_cols = [
-        "match_id", "player", "team", "minute",
+        "match_id", "player", "player_id", "team", "minute",
         "x", "y", "end_x", "end_y",
         "pass_length", "pass_outcome", "pass_height",
         "pass_body_part", "pass_type",
+        # Ver a nota equivalente em build_gk_events().
+        "competition_id", "season_id", "competition_name",
     ]
     keep_cols = [c for c in keep_cols if c in passes.columns]
     return passes[keep_cols].reset_index(drop=True)
