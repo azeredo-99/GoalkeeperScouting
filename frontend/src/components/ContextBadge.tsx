@@ -1,10 +1,10 @@
 export function ContextBadge({
-  competitionId,
-  seasonId,
+  competitionName,
+  seasonName,
   minutes,
 }: {
-  competitionId: number;
-  seasonId: number;
+  competitionName: string;
+  seasonName: string;
   minutes?: number | null;
 }) {
   return (
@@ -22,9 +22,9 @@ export function ContextBadge({
         padding: "4px 10px",
       }}
     >
-      <span>Competition #{competitionId}</span>
+      <span>{competitionName}</span>
       <span style={{ color: "var(--color-text-tertiary)" }}>·</span>
-      <span>Season #{seasonId}</span>
+      <span>{seasonName}</span>
       {minutes != null && (
         <>
           <span style={{ color: "var(--color-text-tertiary)" }}>·</span>
@@ -35,19 +35,28 @@ export function ContextBadge({
   );
 }
 
+export type SampleSize = "unknown" | "large" | "medium" | "small";
+
+export function sampleSize(minutes: number | null): SampleSize {
+  return minutes == null ? "unknown" : minutes >= 900 ? "large" : minutes >= 450 ? "medium" : "small";
+}
+
+export function sampleSizeLabel(minutes: number | null): string {
+  const size = sampleSize(minutes);
+  return size === "large" ? "Strong sample" : size === "medium" ? "Moderate sample" : "Limited sample";
+}
+
 export function SampleIndicator({ minutes }: { minutes: number | null }) {
-  const size = minutes == null ? "unknown" : minutes >= 900 ? "large" : minutes >= 450 ? "medium" : "small";
+  const size = sampleSize(minutes);
   const color =
     size === "large"
       ? "var(--color-accent-text)"
       : size === "medium"
         ? "var(--color-text-secondary)"
-        : "var(--color-danger)";
-  const label =
-    size === "large" ? "Robust sample" : size === "medium" ? "Moderate sample" : "Small sample";
+        : "var(--color-warning)";
   return (
     <span style={{ fontSize: 11, fontWeight: 600, color }}>
-      {label} {minutes != null ? `(${minutes.toFixed(0)} min)` : ""}
+      {sampleSizeLabel(minutes)} {minutes != null ? `(${minutes.toFixed(0)} min)` : ""}
     </span>
   );
 }

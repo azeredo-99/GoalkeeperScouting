@@ -1,17 +1,21 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
+import { useShortlist } from "../lib/shortlist";
 
 const navItems = [
   { to: "/discover", label: "Discover" },
   { to: "/compare", label: "Compare" },
+  { to: "/scouting-profiles", label: "Scouting Profiles" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const shortlistCount = useShortlist().length;
+
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <aside
+        className="app-sidebar"
         style={{
-          width: 232,
           flexShrink: 0,
           borderRight: "1px solid var(--color-border)",
           padding: "var(--space-5) var(--space-4)",
@@ -53,10 +57,45 @@ export function AppShell({ children }: { children: ReactNode }) {
               {item.label}
             </NavLink>
           ))}
+          <NavLink
+            to="/shortlist"
+            style={({ isActive }) => ({
+              padding: "10px 12px",
+              borderRadius: "var(--radius-sm)",
+              fontSize: 13,
+              fontWeight: 600,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              color: isActive ? "var(--color-text)" : "var(--color-text-secondary)",
+              background: isActive ? "var(--color-accent-soft)" : "transparent",
+              borderLeft: isActive ? "2px solid var(--color-accent)" : "2px solid transparent",
+            })}
+          >
+            <span>Shortlist</span>
+            {shortlistCount > 0 && (
+              <span
+                className="tabular"
+                style={{ fontSize: 11, fontWeight: 700, color: "var(--color-text-tertiary)" }}
+              >
+                {shortlistCount}
+              </span>
+            )}
+          </NavLink>
         </nav>
 
         <div style={{ marginTop: "auto", paddingTop: "var(--space-5)" }}>
-          <div style={{ fontSize: 11, color: "var(--color-text-tertiary)", lineHeight: 1.6 }}>
+          <NavLink
+            to="/data-coverage"
+            style={({ isActive }) => ({
+              fontSize: 11,
+              fontWeight: 600,
+              color: isActive ? "var(--color-text-secondary)" : "var(--color-text-tertiary)",
+            })}
+          >
+            Data coverage
+          </NavLink>
+          <div style={{ fontSize: 11, color: "var(--color-text-tertiary)", lineHeight: 1.6, marginTop: 8 }}>
             Professional goalkeeper
             <br />
             scouting intelligence.
@@ -65,9 +104,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <main style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", padding: "var(--space-6) var(--space-6)" }}>
-          {children}
-        </div>
+        <div className="app-main-inner">{children}</div>
       </main>
     </div>
   );

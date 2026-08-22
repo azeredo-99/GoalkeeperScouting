@@ -16,7 +16,45 @@ function normalizeAxis(values: number[]): number[] {
   return values.map((v) => (Number.isFinite(v) ? (v - min) / (max - min) : 0));
 }
 
-export function RadarChart({ labels, series, size = 260 }: { labels: string[]; series: Series[]; size?: number }) {
+export function RadarChart({
+  labels,
+  series,
+  size = 260,
+  emptyMessage = "Not enough recorded metrics for a radar in this sample.",
+}: {
+  labels: string[];
+  series: Series[];
+  size?: number;
+  emptyMessage?: string;
+}) {
+  const hasAnyData =
+    labels.length > 0 &&
+    series.length > 0 &&
+    series.some((s) => s.values.some((v) => Number.isFinite(v)));
+
+  if (!hasAnyData) {
+    return (
+      <div
+        style={{
+          width: size,
+          height: size,
+          maxWidth: "100%",
+          borderRadius: "var(--radius-md)",
+          border: "1px dashed var(--color-border)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "var(--space-4)",
+          color: "var(--color-text-tertiary)",
+          fontSize: 12,
+        }}
+      >
+        {emptyMessage}
+      </div>
+    );
+  }
+
   const center = size / 2;
   const radius = size / 2 - 40;
   const angleFor = (i: number) => (Math.PI * 2 * i) / labels.length - Math.PI / 2;
@@ -25,18 +63,20 @@ export function RadarChart({ labels, series, size = 260 }: { labels: string[]; s
     normalizeAxis(series.map((s) => s.values[axisIndex]))
   );
 
+  const safeCoord = (v: number) => (Number.isFinite(v) ? v : center);
+
   const points = (seriesIndex: number) =>
     labels
       .map((_, axisIndex) => {
-        const norm = axesNormalized[axisIndex][seriesIndex];
+        const norm = axesNormalized[axisIndex]?.[seriesIndex] ?? 0;
         const r = norm * radius;
         const angle = angleFor(axisIndex);
-        return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
+        return `${safeCoord(center + r * Math.cos(angle))},${safeCoord(center + r * Math.sin(angle))}`;
       })
       .join(" ");
 
   return (
-    <svg width={size} height={size}>
+    <svg width={size} height={size} style={{ maxWidth: "100%", height: "auto" }}>
       {[0.25, 0.5, 0.75, 1].map((ratio) => (
         <polygon
           key={ratio}
@@ -73,7 +113,7 @@ export function RadarChart({ labels, series, size = 260 }: { labels: string[]; s
 
       {series.map((s, si) => (
         <polygon
-          key={s.name}
+          key={`${s.name}-${si}`}
           points={points(si)}
           fill={s.color}
           fillOpacity={0.14}

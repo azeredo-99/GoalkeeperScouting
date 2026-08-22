@@ -19,6 +19,7 @@
 
   /* Status */
   --color-danger: #c0574a;
+  --color-warning: #c98a3f;
 
   /* Radius */
   --radius-sm: 6px;
@@ -100,4 +101,71 @@ button {
 
 .scroll-x {
   overflow-x: auto;
+}
+
+.app-sidebar {
+  width: 232px;
+}
+
+.app-main-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .app-sidebar {
+    width: 176px;
+    padding-left: var(--space-3) !important;
+    padding-right: var(--space-3) !important;
+  }
+  .app-main-inner {
+    padding: var(--space-4);
+  }
+}
+
+/* Scouting report -- print/A4 ready. Scoped to `.scouting-report` so
+   only that page's colours flip to a print-friendly light theme;
+   nothing else in the app is affected. `.no-print` marks interactive
+   chrome (nav, buttons, action bars) that has no place on a printed
+   page. */
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+
+  .app-sidebar,
+  .no-print {
+    display: none !important;
+  }
+
+  .app-main-inner {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .scouting-report {
+    --color-bg: #ffffff;
+    --color-surface: #ffffff;
+    --color-surface-raised: #f4f4f4;
+    --color-border: #cccccc;
+    --color-border-soft: #dddddd;
+    --color-text: #111111;
+    --color-text-secondary: #333333;
+    --color-text-tertiary: #555555;
+    --color-accent: #1a6b4a;
+    --color-accent-strong: #1a6b4a;
+    --color-accent-soft: #e6f0ea;
+    --color-accent-text: #1a6b4a;
+    --color-warning: #8a5a12;
+    --color-danger: #8a2a2a;
+    background: #ffffff;
+    color: #111111;
+  }
+
+  .scouting-report .card,
+  .scouting-report .report-section {
+    break-inside: avoid;
+  }
 }

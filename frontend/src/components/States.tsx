@@ -6,18 +6,39 @@ export function LoadingState({ label = "Loading…" }: { label?: string }) {
   );
 }
 
-export function ErrorState({ message }: { message: string }) {
+export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
     <div
       style={{
         padding: "var(--space-4)",
         borderRadius: "var(--radius-md)",
         border: "1px solid var(--color-danger)",
-        color: "var(--color-danger)",
-        fontSize: 13,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "var(--space-4)",
+        flexWrap: "wrap",
       }}
     >
-      {message}
+      <span style={{ color: "var(--color-danger)", fontSize: 13 }}>{message}</span>
+      {onRetry && (
+        <button
+          onClick={onRetry}
+          style={{
+            fontSize: 12,
+            fontWeight: 600,
+            padding: "6px 12px",
+            borderRadius: "var(--radius-sm)",
+            border: "1px solid var(--color-danger)",
+            background: "transparent",
+            color: "var(--color-danger)",
+            cursor: "pointer",
+            flexShrink: 0,
+          }}
+        >
+          Try again
+        </button>
+      )}
     </div>
   );
 }

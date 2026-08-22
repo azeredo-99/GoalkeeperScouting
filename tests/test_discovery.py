@@ -30,13 +30,17 @@ def _performances():
     return pd.DataFrame(
         [
             {"player_name": "Diogo Costa", "competition_id": 1, "season_id": 2022,
-             "minutes": 900.0, "save_pct": 80.0},
+             "minutes": 900.0, "save_pct": 80.0, "sweeper_actions_p90": 1.5,
+             "pass_success_pct": 85.0, "long_ball_pct": 20.0},
             {"player_name": "Diogo Costa", "competition_id": 2, "season_id": 2023,
-             "minutes": 300.0, "save_pct": 55.0},
+             "minutes": 300.0, "save_pct": 55.0, "sweeper_actions_p90": None,
+             "pass_success_pct": 60.0, "long_ball_pct": 40.0},
             {"player_name": "Thibaut Courtois", "competition_id": 1, "season_id": 2022,
-             "minutes": 600.0, "save_pct": 70.0},
+             "minutes": 600.0, "save_pct": 70.0, "sweeper_actions_p90": 0.5,
+             "pass_success_pct": 75.0, "long_ball_pct": 30.0},
             {"player_name": "Yassine Bounou", "competition_id": 3, "season_id": 2021,
-             "minutes": 120.0, "save_pct": 65.0},
+             "minutes": 120.0, "save_pct": 65.0, "sweeper_actions_p90": 1.0,
+             "pass_success_pct": 90.0, "long_ball_pct": 10.0},
         ]
     )
 
@@ -252,6 +256,47 @@ def test_filter_by_min_market_value():
 def test_market_value_filter_excludes_players_without_market_data():
     result = filter_candidates(_enriched(), min_market_value=0.0)
     assert "Yassine Bounou" not in set(result["player_name"])
+
+
+# --- filtros de performance (Discovery 2.0) ---
+
+def test_filter_by_min_save_pct():
+    result = filter_candidates(_enriched(), min_save_pct=70.0)
+    assert set(result["player_name"]) == {"Diogo Costa", "Thibaut Courtois"}
+    assert all(result["save_pct"] >= 70.0)
+
+
+def test_filter_by_min_sweeper_actions_p90_excludes_missing_values():
+    """
+    O contexto 2023 do Diogo Costa não tem sweeper_actions_p90 -- um
+    filtro mínimo ativo tem de o excluir, nunca tratar o missing como 0.
+    """
+    result = filter_candidates(_enriched(), min_sweeper_actions_p90=1.0)
+    assert set(zip(result["player_name"], result["season_id"])) == {
+        ("Diogo Costa", 2022),
+        ("Yassine Bounou", 2021),
+    }
+
+
+def test_filter_by_min_pass_success_pct():
+    result = filter_candidates(_enriched(), min_pass_success_pct=80.0)
+    assert set(result["player_name"]) == {"Diogo Costa", "Yassine Bounou"}
+    # Confirma que é o contexto certo do Diogo Costa (2022, não 2023).
+    assert set(result[result["player_name"] == "Diogo Costa"]["season_id"]) == {2022}
+
+
+def test_filter_by_min_long_ball_pct():
+    result = filter_candidates(_enriched(), min_long_ball_pct=30.0)
+    assert set(zip(result["player_name"], result["season_id"])) == {
+        ("Diogo Costa", 2023),
+        ("Thibaut Courtois", 2022),
+    }
+
+
+def test_combination_of_performance_filters():
+    result = filter_candidates(_enriched(), min_save_pct=75.0, min_pass_success_pct=80.0)
+    assert set(result["player_name"]) == {"Diogo Costa"}
+    assert set(result["season_id"]) == {2022}
 
 
 # ===========================================================================

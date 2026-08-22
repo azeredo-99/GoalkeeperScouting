@@ -96,6 +96,10 @@ def filter_candidates(
     max_age: float | None = None,
     min_market_value: float | None = None,
     max_market_value: float | None = None,
+    min_save_pct: float | None = None,
+    min_sweeper_actions_p90: float | None = None,
+    min_pass_success_pct: float | None = None,
+    min_long_ball_pct: float | None = None,
 ) -> pd.DataFrame:
     """
     Aplica filtros explícitos, um de cada vez, todos opcionais.
@@ -110,6 +114,12 @@ def filter_candidates(
     fora quando um desses filtros está ativo (não pode ser avaliado,
     por isso não passa), mas continua incluído quando esses filtros não
     são usados.
+
+    Os filtros de performance (Discovery 2.0) usam exatamente as mesmas
+    colunas já calculadas por `metrics.py` -- nenhum recálculo, nenhuma
+    métrica nova. Mesma regra de missing values: uma linha sem o dado
+    (ex.: sem sweeper actions) não pode satisfazer um mínimo, por isso
+    fica de fora quando esse filtro está ativo.
     """
 
     result = df
@@ -136,6 +146,26 @@ def filter_candidates(
         result = result[
             result["market_value_in_eur"].notna()
             & (result["market_value_in_eur"] <= max_market_value)
+        ]
+
+    if min_save_pct is not None:
+        result = result[result["save_pct"].notna() & (result["save_pct"] >= min_save_pct)]
+
+    if min_sweeper_actions_p90 is not None:
+        result = result[
+            result["sweeper_actions_p90"].notna()
+            & (result["sweeper_actions_p90"] >= min_sweeper_actions_p90)
+        ]
+
+    if min_pass_success_pct is not None:
+        result = result[
+            result["pass_success_pct"].notna()
+            & (result["pass_success_pct"] >= min_pass_success_pct)
+        ]
+
+    if min_long_ball_pct is not None:
+        result = result[
+            result["long_ball_pct"].notna() & (result["long_ball_pct"] >= min_long_ball_pct)
         ]
 
     return result.reset_index(drop=True)

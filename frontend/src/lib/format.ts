@@ -36,6 +36,16 @@ export function formatMarketValue(value: number | null | undefined): string {
   return `€${value.toFixed(0)}`;
 }
 
-export function contextLabel(competitionId: number, seasonId: number): string {
-  return `Competition #${competitionId} · Season #${seasonId}`;
+export function contextLabel(competitionName: string, seasonName: string): string {
+  return `${competitionName} · ${seasonName}`;
+}
+
+// Um jogador pode não ter correspondência de mercado ou não ter clube
+// atual registado -- nenhum dos dois casos é "unknown" no sentido de
+// dado em falta por erro; é apenas informação que não temos. Nunca
+// inventamos um clube.
+export const NO_CLUB_LABEL = "No current club";
+
+export function formatClub(club: string | null | undefined): string {
+  return club ?? NO_CLUB_LABEL;
 }

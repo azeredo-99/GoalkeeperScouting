@@ -4,8 +4,11 @@ import { getSimilarity } from "../api/client";
 import type { SimilarityResponse } from "../api/types";
 import { ContextBadge } from "../components/ContextBadge";
 import { BackLink } from "../components/BackLink";
-import { ErrorState, LoadingState } from "../components/States";
-import { formatMarketValue } from "../lib/format";
+import { DimensionInline, DimensionSnapshot } from "../components/DimensionSnapshot";
+import { EmptyState, ErrorState, LoadingState } from "../components/States";
+import { formatClub, formatMarketValue } from "../lib/format";
+
+const NO_COMPARABLES_MESSAGE = "No suitable comparable goalkeepers found for this reference context.";
 
 export function Similar() {
   const { player } = useParams<{ player: string }>();
@@ -23,14 +26,18 @@ export function Similar() {
     setError(null);
     getSimilarity(player, weights)
       .then(setData)
-      .catch((e) => setError((e as Error).message))
+      // A página de Similarity só falha por falta de comparáveis (jogador
+      // sem minutos suficientes, sem métricas, etc.) -- nunca mostramos o
+      // texto bruto do backend aqui (pode incluir mensagens internas em
+      // português vindas de similarity_engine).
+      .catch(() => setError(NO_COMPARABLES_MESSAGE))
       .finally(() => setLoading(false));
   }
 
   useEffect(load, [player]);
 
   if (loading && !data) return <LoadingState label="Loading similarity…" />;
-  if (error) return <ErrorState message={error} />;
+  if (error) return <ErrorState message={error} onRetry={load} />;
   if (!data) return null;
 
   return (
@@ -40,13 +47,22 @@ export function Similar() {
         Similar to
       </div>
       <h1 style={{ fontSize: 26, fontWeight: 800, margin: "0 0 8px" }}>{data.target.playerName}</h1>
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)", marginBottom: "var(--space-6)" }}>
-        <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>{data.target.club ?? "Club unknown"}</span>
-        <ContextBadge competitionId={data.target.competitionId} seasonId={data.target.seasonId} minutes={data.target.minutes} />
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)", marginBottom: "var(--space-4)" }}>
+        <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>{formatClub(data.target.club)}</span>
+        <ContextBadge
+          competitionName={data.target.competitionName}
+          seasonName={data.target.seasonName}
+          minutes={data.target.minutes}
+        />
       </div>
 
       <div className="card" style={{ marginBottom: "var(--space-6)" }}>
-        <div className="section-title">Scouting weights</div>
+        <div className="section-title">Reference profile</div>
+        <DimensionSnapshot metrics={data.target.metrics} />
+      </div>
+
+      <div className="card" style={{ marginBottom: "var(--space-6)" }}>
+        <div className="section-title">Similarity weights</div>
         <div style={{ display: "flex", gap: "var(--space-5)", flexWrap: "wrap" }}>
           <WeightSlider
             label="Shot Stopping"
@@ -90,51 +106,61 @@ export function Similar() {
       </div>
 
       <div className="section-title">Results</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
-        {data.results.map((r) => (
-          <div key={`${r.playerName}-${r.competitionId}-${r.seasonId}`} className="card" style={{ padding: "var(--space-4)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--space-4)" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-                  <span style={{ fontWeight: 700, fontSize: 15 }}>
-                    {r.rank}. {r.playerName}
-                  </span>
-                  <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>{r.club ?? "Club unknown"}</span>
+      {data.results.length === 0 ? (
+        <EmptyState message="No suitable comparable goalkeepers found." />
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+          {data.results.map((r) => (
+            <div key={`${r.playerName}-${r.competitionId}-${r.seasonId}`} className="card" style={{ padding: "var(--space-4)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--space-4)", flexWrap: "wrap" }}>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+                    <span style={{ fontWeight: 700, fontSize: 15 }}>
+                      {r.rank}. {r.playerName}
+                    </span>
+                    <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>{formatClub(r.club)}</span>
+                  </div>
+                  <div style={{ marginTop: 6, display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+                    <ContextBadge competitionName={r.competitionName} seasonName={r.seasonName} minutes={r.minutes} />
+                    <span style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>{formatMarketValue(r.marketValueEur)}</span>
+                  </div>
+                  <div style={{ marginTop: "var(--space-3)" }}>
+                    <DimensionInline metrics={r.metrics} />
+                  </div>
+                  <div className="label" style={{ marginTop: "var(--space-3)", marginBottom: 4 }}>
+                    Why similar?
+                  </div>
+                  <p style={{ fontSize: 12, color: "var(--color-text-secondary)", margin: 0, maxWidth: 560 }}>
+                    {r.explanation}
+                  </p>
                 </div>
-                <div style={{ marginTop: 6, display: "flex", gap: 10, alignItems: "center" }}>
-                  <ContextBadge competitionId={r.competitionId} seasonId={r.seasonId} minutes={r.minutes} />
-                  <span style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>{formatMarketValue(r.marketValueEur)}</span>
+                <div style={{ textAlign: "right", flexShrink: 0 }}>
+                  <div className="label">Similarity</div>
+                  <div className="tabular" style={{ fontSize: 20, fontWeight: 800, color: "var(--color-accent-text)" }}>
+                    {r.similarityPct.toFixed(1)}%
+                  </div>
+                  <button
+                    onClick={() => navigate(`/player/${encodeURIComponent(r.playerName)}`)}
+                    style={{
+                      marginTop: 8,
+                      padding: "6px 12px",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      borderRadius: "var(--radius-sm)",
+                      border: "1px solid var(--color-border)",
+                      background: "transparent",
+                      color: "var(--color-text-secondary)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    View profile
+                  </button>
                 </div>
-                <p style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8, maxWidth: 560 }}>
-                  {r.explanation}
-                </p>
-              </div>
-              <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <div className="label">Similarity</div>
-                <div className="tabular" style={{ fontSize: 20, fontWeight: 800, color: "var(--color-accent-text)" }}>
-                  {r.similarityPct.toFixed(1)}%
-                </div>
-                <button
-                  onClick={() => navigate(`/player/${encodeURIComponent(r.playerName)}`)}
-                  style={{
-                    marginTop: 8,
-                    padding: "6px 12px",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    borderRadius: "var(--radius-sm)",
-                    border: "1px solid var(--color-border)",
-                    background: "transparent",
-                    color: "var(--color-text-secondary)",
-                    cursor: "pointer",
-                  }}
-                >
-                  View profile
-                </button>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

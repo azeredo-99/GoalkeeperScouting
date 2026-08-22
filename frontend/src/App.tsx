@@ -4,6 +4,10 @@ import { Discover } from "./pages/Discover";
 import { PlayerProfile } from "./pages/PlayerProfile";
 import { Compare } from "./pages/Compare";
 import { Similar } from "./pages/Similar";
+import { Shortlist } from "./pages/Shortlist";
+import { ScoutingReport } from "./pages/ScoutingReport";
+import { ScoutingProfiles } from "./pages/ScoutingProfiles";
+import { DataCoverage } from "./pages/DataCoverage";
 
 export default function App() {
   return (
@@ -14,6 +18,10 @@ export default function App() {
         <Route path="/player/:player" element={<PlayerProfile />} />
         <Route path="/compare" element={<Compare />} />
         <Route path="/similar/:player" element={<Similar />} />
+        <Route path="/shortlist" element={<Shortlist />} />
+        <Route path="/report/:player" element={<ScoutingReport />} />
+        <Route path="/scouting-profiles" element={<ScoutingProfiles />} />
+        <Route path="/data-coverage" element={<DataCoverage />} />
       </Routes>
     </AppShell>
   );
