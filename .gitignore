@@ -27,6 +27,9 @@ output/*
 # VS Code local settings
 .vscode/
 
+# Local Claude Code tooling config (dev-server launch config, not part of the app)
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db
