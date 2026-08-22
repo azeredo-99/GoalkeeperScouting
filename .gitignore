@@ -11,6 +11,8 @@ venv/
 # Data files
 data/*.pkl
 data/*.csv.gz
+data/*.log
+data/_phase12_chunks/
 
 # Generated output
 output/*
