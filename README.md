@@ -135,7 +135,6 @@ python -m venv .venv
 source .venv/bin/activate       # macOS/Linux
 
 pip install -r requirements.txt
-pip install fastapi "uvicorn[standard]"   # not yet pinned in requirements.txt
 
 docker compose up -d
 alembic upgrade head
