@@ -25,7 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from statsbombpy import sb
 
 from gk_scouting.db.repository import load_gk_performances
-from gk_scouting.market_data import calculate_age, format_market_value, get_goalkeepers
+from gk_scouting.market_data import calculate_age, format_market_value, get_goalkeepers, season_reference_date
 from gk_scouting.player_matching import create_name_index, match_players
 from gk_scouting.discovery import (
     available_competitions,
@@ -113,6 +113,20 @@ def _competition_names() -> dict:
     return lookup
 
 
+@lru_cache(maxsize=1)
+def _season_reference_dates() -> dict:
+    """
+    (competition_id, season_id) -> data de referência da época (ver
+    market_data.season_reference_date), para todas as competições
+    conhecidas -- usado por enrich_with_market para que "idade" seja
+    sempre a da época, nunca a idade atual.
+    """
+    return {
+        key: season_reference_date(season_name)
+        for key, (_competition_name, season_name) in _competition_names().items()
+    }
+
+
 def _context_names(competition_id: int, season_id: int) -> tuple:
     names = _competition_names().get((competition_id, season_id))
     if names is None:
@@ -134,19 +148,25 @@ def _clean(value):
 
 
 def _identity(player_name: str, market_lookup: dict) -> dict:
+    """
+    Identidade ao nível do jogador -- nunca inclui idade. Um jogador
+    pode ter várias linhas de desempenho (competições/épocas
+    diferentes); "idade" só tem significado ligada a UMA dessas épocas
+    (ver calculate_age/season_reference_date), nunca como valor único
+    ao nível do jogador. A idade de cada contexto já vem em
+    `_row_to_dict`.
+    """
     market = market_lookup.get(player_name)
     if market is None:
         return {
             "playerName": player_name,
             "club": None,
-            "age": None,
             "marketValueEur": None,
             "highestMarketValueEur": None,
         }
     return {
         "playerName": player_name,
         "club": _clean(market.get("current_club_name")),
-        "age": calculate_age(market.get("date_of_birth")),
         "marketValueEur": _clean(market.get("market_value_in_eur")),
         "highestMarketValueEur": _clean(market.get("highest_market_value_in_eur")),
     }
@@ -189,16 +209,22 @@ def _match_input(row: pd.Series, market_lookup: dict) -> dict:
     O dict que `scouting_match.match_player_to_profile` espera --
     exatamente as colunas já calculadas por metrics.py mais idade/valor
     de mercado do mapa de mercado já existente. Nenhum valor novo,
-    nenhum recálculo.
+    nenhum recálculo. A idade é sempre a da época de `row`
+    (competition_id/season_id), nunca a idade atual -- ver
+    calculate_age/season_reference_date.
     """
     market = market_lookup.get(row["player_name"] if "player_name" in row else row.name)
+    _, season_name = _context_names(int(row["competition_id"]), int(row["season_id"]))
+    age = None
+    if market is not None:
+        age = calculate_age(market.get("date_of_birth"), as_of=season_reference_date(season_name))
     return {
         "save_pct": _clean(row.get("save_pct")),
         "sweeper_actions_p90": _clean(row.get("sweeper_actions_p90")),
         "avg_distance_from_goal": _clean(row.get("avg_distance_from_goal")),
         "pass_success_pct": _clean(row.get("pass_success_pct")),
         "long_ball_pct": _clean(row.get("long_ball_pct")),
-        "age": calculate_age(market.get("date_of_birth")) if market is not None else None,
+        "age": age,
         "market_value_eur": _clean(market.get("market_value_in_eur")) if market is not None else None,
         "minutes": _clean(row.get("minutes")),
     }
@@ -259,7 +285,9 @@ def _row_to_dict(row: pd.Series, market_lookup: dict) -> dict:
         "seasonName": season_name,
         "minutes": _clean(row["minutes"]),
         "club": _clean(market.get("current_club_name")) if market is not None else None,
-        "age": calculate_age(market.get("date_of_birth")) if market is not None else None,
+        "age": calculate_age(market.get("date_of_birth"), as_of=season_reference_date(season_name))
+        if market is not None
+        else None,
         "marketValueEur": _clean(market.get("market_value_in_eur")) if market is not None else None,
         "metrics": _metrics_dict(row),
     }
@@ -331,7 +359,7 @@ def discover_players(
     custom_profile: str | None = None,
 ):
     performances, _, market_lookup = _state()
-    enriched = enrich_with_market(performances, market_lookup)
+    enriched = enrich_with_market(performances, market_lookup, _season_reference_dates())
     candidates = filter_candidates(
         enriched,
         competition_id=competition_id,

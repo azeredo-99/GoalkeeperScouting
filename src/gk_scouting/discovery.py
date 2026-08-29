@@ -46,13 +46,26 @@ def search_by_name(performances: pd.DataFrame, query: str) -> pd.DataFrame:
     return performances[mask].reset_index(drop=True)
 
 
-def enrich_with_market(performances: pd.DataFrame, market_lookup: dict) -> pd.DataFrame:
+def enrich_with_market(
+    performances: pd.DataFrame,
+    market_lookup: dict,
+    season_reference_dates: dict | None = None,
+) -> pd.DataFrame:
     """
     Acrescenta `current_club_name`, `market_value_in_eur` e `age` a cada
     linha, a partir de `market_lookup` (mapa player_name -> linha de
     mercado, já resolvido pelo matching StatsBomb<->Transfermarkt
     existente -- não é uma fonte de dados nova, é o mapa que a app já
     constrói).
+
+    `season_reference_dates` é um mapa opcional
+    `(competition_id, season_id) -> pd.Timestamp` (ver
+    `market_data.season_reference_date`), para que a idade seja a da
+    própria época da linha -- nunca a idade atual, que não tem relação
+    com uma amostra de desempenho histórica. Sem este mapa, cada idade
+    cai na omissão de `calculate_age` (idade atual); o chamador deve
+    passá-lo sempre que os dados forem de épocas passadas, que é o caso
+    de todo este projeto.
 
     Um jogador sem correspondência de mercado fica com essas três
     colunas a `None`/`NaN`, nunca removido nem inventado.
@@ -76,14 +89,19 @@ def enrich_with_market(performances: pd.DataFrame, market_lookup: dict) -> pd.Da
         row = _market_row(name)
         return None if row is None else row.get("market_value_in_eur")
 
-    def _age(name):
-        row = _market_row(name)
-        return None if row is None else calculate_age(row.get("date_of_birth"))
+    def _age(perf_row):
+        market_row = _market_row(perf_row["player_name"])
+        if market_row is None:
+            return None
+        as_of = None
+        if season_reference_dates is not None:
+            as_of = season_reference_dates.get((perf_row["competition_id"], perf_row["season_id"]))
+        return calculate_age(market_row.get("date_of_birth"), as_of=as_of)
 
     result = performances.copy()
     result["current_club_name"] = result["player_name"].map(_club)
     result["market_value_in_eur"] = result["player_name"].map(_value)
-    result["age"] = result["player_name"].map(_age)
+    result["age"] = result.apply(_age, axis=1)
     return result
 
 

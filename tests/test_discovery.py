@@ -165,6 +165,39 @@ def test_enrich_on_empty_dataframe_returns_empty_with_expected_columns():
         assert column in enriched.columns
 
 
+def test_enrich_without_season_reference_dates_falls_back_to_today():
+    """
+    Comportamento por omissão (sem season_reference_dates) continua a
+    dar uma idade, só que calculada a partir de hoje -- documenta o
+    fallback, não é o uso correto para dados históricos (ver o teste
+    seguinte).
+    """
+    enriched = enrich_with_market(_performances(), _market_lookup())
+    row = enriched[enriched["player_name"] == "Diogo Costa"].iloc[0]
+    assert row["age"] is not None
+
+
+def test_enrich_uses_season_reference_dates_per_row_not_current_age():
+    """
+    O bug real: a mesma pessoa (Diogo Costa), em duas linhas de
+    competição/época diferentes, tinha sempre a mesma idade (a atual).
+    Com season_reference_dates, cada linha usa a data da sua própria
+    época -- idades diferentes para épocas diferentes.
+    """
+    season_reference_dates = {
+        (1, 2022): pd.Timestamp(2022, 7, 1),
+        (2, 2023): pd.Timestamp(2023, 7, 1),
+    }
+    enriched = enrich_with_market(_performances(), _market_lookup(), season_reference_dates)
+    rows = enriched[enriched["player_name"] == "Diogo Costa"]
+    age_2022 = rows[rows["season_id"] == 2022].iloc[0]["age"]
+    age_2023 = rows[rows["season_id"] == 2023].iloc[0]["age"]
+    # Diogo Costa nasceu em 1999-09-19: em 2022-07-01 tem 22, em 2023-07-01 tem 23.
+    assert age_2022 == 22
+    assert age_2023 == 23
+    assert age_2022 != age_2023
+
+
 # ===========================================================================
 # filter_candidates
 # ===========================================================================

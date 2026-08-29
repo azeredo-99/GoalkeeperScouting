@@ -1,4 +1,5 @@
 import os
+import re
 import urllib.request
 import urllib.error
 
@@ -345,9 +346,35 @@ def format_market_value(value):
 # IDADE
 # =========================================================
 
-def calculate_age(date_of_birth):
+def season_reference_date(season_name: str) -> pd.Timestamp:
     """
-    Calcula a idade atual.
+    Uma data de referência para "idade nesta época", extraída do nome
+    da época (ex.: "2015/2016" -> 1 julho 2016; "2018" -> 1 julho 2018).
+    Épocas europeias de clubes atravessam dois anos civis; usa-se o ano
+    em que a época termina, que é onde a maior parte dela é jogada.
+    Épocas de um único ano (torneios, MLS) usam esse ano diretamente.
+
+    1 de julho é uma convenção deliberada e documentada, não uma data
+    exata de jogo -- os dados estão agregados por competição/época, não
+    por jogo, por isso não existe granularidade mais fina que isto.
+    """
+    years = re.findall(r"\d{4}", season_name or "")
+    if not years:
+        raise ValueError(f"Não foi possível extrair um ano do nome da época: '{season_name}'")
+    return pd.Timestamp(year=int(years[-1]), month=7, day=1)
+
+
+def calculate_age(date_of_birth, as_of: pd.Timestamp | None = None):
+    """
+    Idade à data de referência `as_of`.
+
+    Todos os dados deste projeto são de épocas passadas -- por isso
+    quem chamar isto deve passar `as_of=season_reference_date(...)`
+    com o nome da época em causa. Sem `as_of`, cai em `pd.Timestamp
+    .today()`, o que só faz sentido fora de qualquer contexto de época
+    (ex.: um caso de uso futuro que precise mesmo da idade atual) --
+    nunca a omissão certa para mostrar "idade" ao lado de uma amostra
+    de desempenho histórica.
     """
 
     if pd.isna(date_of_birth):
@@ -360,13 +387,13 @@ def calculate_age(date_of_birth):
             date_of_birth
         )
 
-        today = pd.Timestamp.today()
+        reference = as_of if as_of is not None else pd.Timestamp.today()
 
         age = (
-            today.year
+            reference.year
             - birth_date.year
             - (
-                (today.month, today.day)
+                (reference.month, reference.day)
                 < (
                     birth_date.month,
                     birth_date.day,

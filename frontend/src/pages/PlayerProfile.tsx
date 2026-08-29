@@ -189,9 +189,9 @@ export function PlayerProfile() {
               <div style={{ fontSize: 16, fontWeight: 700 }}>Goalkeeper</div>
             </div>
             <div>
-              <div className="label">Age</div>
+              <div className="label">Age (this season)</div>
               <div className="tabular" style={{ fontSize: 16, fontWeight: 700 }}>
-                {identity.age != null ? `${identity.age}` : "N/A"}
+                {active.age != null ? `${active.age}` : "N/A"}
               </div>
             </div>
             <div>

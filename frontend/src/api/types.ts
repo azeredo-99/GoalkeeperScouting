@@ -40,10 +40,13 @@ export interface PerformanceRow {
   scoutingMatch?: ScoutingMatch;
 }
 
+// Nunca inclui idade -- um jogador pode ter várias linhas de
+// desempenho (competições/épocas diferentes), e "idade" só faz
+// sentido ligada a UMA dessas épocas (ver PerformanceRow.age), nunca
+// como valor único ao nível do jogador.
 export interface PlayerIdentity {
   playerName: string;
   club: string | null;
-  age: number | null;
   marketValueEur: number | null;
   highestMarketValueEur: number | null;
 }
