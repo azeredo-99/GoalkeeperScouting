@@ -17,6 +17,7 @@ import { RadarChart } from "../components/RadarChart";
 import { SweeperMap } from "../components/SweeperMap";
 import { ErrorState, LoadingState } from "../components/States";
 import { addToShortlist, PRIORITY_LABELS, STATUS_LABELS, useShortlist } from "../lib/shortlist";
+import { useCustomProfiles } from "../lib/customScoutingProfiles";
 import { buildTakeaways } from "../lib/takeaways";
 import {
   NO_ACTIONS_LABEL,
@@ -112,13 +113,23 @@ export function ScoutingReport() {
   const scoutingProfileId = searchParams.get("scouting_profile");
   const [scoutingMatch, setScoutingMatch] = useState<ScoutingMatch | null>(null);
 
+  // O id na URL pode ser um predefinido (backend, ver get_profile) ou
+  // um perfil custom do scout (localStorage) -- resolvido aqui, tal
+  // como em Discover.tsx, para saber se enviamos só o id ou a
+  // definição completa.
+  const customProfiles = useCustomProfiles();
+  const customProfile = useMemo(
+    () => customProfiles.find((p) => p.id === scoutingProfileId) ?? undefined,
+    [customProfiles, scoutingProfileId]
+  );
+
   useEffect(() => {
     if (!scoutingProfileId || !active) {
       setScoutingMatch(null);
       return;
     }
     let cancelled = false;
-    getScoutingMatch(active.playerName, scoutingProfileId, active.competitionId, active.seasonId)
+    getScoutingMatch(active.playerName, scoutingProfileId, active.competitionId, active.seasonId, customProfile)
       .then((result) => {
         if (!cancelled) setScoutingMatch(result);
       })
@@ -128,7 +139,7 @@ export function ScoutingReport() {
     return () => {
       cancelled = true;
     };
-  }, [scoutingProfileId, active?.playerName, active?.competitionId, active?.seasonId]);
+  }, [scoutingProfileId, active?.playerName, active?.competitionId, active?.seasonId, customProfile]);
 
   if (loading) return <LoadingState label="Loading report…" />;
   if (error) return <ErrorState message={error} />;

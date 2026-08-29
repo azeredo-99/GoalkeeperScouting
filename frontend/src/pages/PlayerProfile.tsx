@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getPlayerBenchmark, getPlayerProfile, getSimilarity } from "../api/client";
 import type { BenchmarkResponse, PerformanceRow, PlayerProfileResponse, SimilarityResponse } from "../api/types";
 import { SampleIndicator } from "../components/ContextBadge";
@@ -38,6 +38,11 @@ function radarValues(row: PerformanceRow): number[] {
 export function PlayerProfile() {
   const { player } = useParams<{ player: string }>();
   const navigate = useNavigate();
+  // Perfil ativo em Discover, só a atravessar esta página até ao
+  // Scouting Report -- nunca lido nem usado aqui, ver nota em
+  // goToReport().
+  const [searchParams] = useSearchParams();
+  const scoutingProfileId = searchParams.get("scouting_profile");
   const [data, setData] = useState<PlayerProfileResponse | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -123,6 +128,7 @@ export function PlayerProfile() {
       competition_id: String(active!.competitionId),
       season_id: String(active!.seasonId),
     });
+    if (scoutingProfileId) params.set("scouting_profile", scoutingProfileId);
     navigate(`/report/${encodeURIComponent(identity.playerName)}?${params.toString()}`);
   }
 

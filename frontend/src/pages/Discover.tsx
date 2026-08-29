@@ -468,6 +468,7 @@ export function Discover() {
               entity={entity}
               onToggleCompare={toggleCompare}
               selectedForCompare={compareSelection.some((p) => rowMatches(p, entity))}
+              scoutingProfileId={scoutingProfileId || undefined}
             />
           ))}
       </div>

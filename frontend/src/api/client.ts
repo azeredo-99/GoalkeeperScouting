@@ -87,13 +87,18 @@ export function getScoutingMatch(
   playerName: string,
   profileId: string,
   competitionId: number,
-  seasonId: number
+  seasonId: number,
+  customProfile?: ScoutingProfile
 ): Promise<ScoutingMatch> {
   const params = new URLSearchParams({
-    profile_id: profileId,
     competition_id: String(competitionId),
     season_id: String(seasonId),
   });
+  if (customProfile) {
+    params.set("custom_profile", JSON.stringify(customProfile));
+  } else {
+    params.set("profile_id", profileId);
+  }
   return getJson(`/api/players/${encodeURIComponent(playerName)}/scouting-match?${params.toString()}`);
 }
 

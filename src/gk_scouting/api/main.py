@@ -449,17 +449,33 @@ def get_scouting_profile(profile_id: str):
 
 
 @app.get("/api/players/{player_name}/scouting-match")
-def get_scouting_match(player_name: str, profile_id: str, competition_id: int, season_id: int):
+def get_scouting_match(
+    player_name: str,
+    competition_id: int,
+    season_id: int,
+    profile_id: str | None = None,
+    custom_profile: str | None = None,
+):
     """
     PLAYER × PROFILE × CONTEXT -- nunca um valor armazenado ou
     independente de perfil/contexto. Reavaliado a cada pedido a partir
-    dos dados já existentes.
+    dos dados já existentes. `custom_profile` (definição inline, ver
+    customScoutingProfiles.ts no frontend) tem prioridade sobre
+    `profile_id` -- mesma regra e o mesmo parser de discover_players.
     """
     performances, _, market_lookup = _state()
 
-    profile = get_profile(profile_id)
-    if profile is None:
-        raise HTTPException(status_code=404, detail="Scouting profile not found")
+    if custom_profile:
+        try:
+            profile = parse_custom_profile(custom_profile)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+    elif profile_id:
+        profile = get_profile(profile_id)
+        if profile is None:
+            raise HTTPException(status_code=404, detail=f"Unknown scouting profile: '{profile_id}'")
+    else:
+        raise HTTPException(status_code=400, detail="profile_id or custom_profile is required")
 
     match = performances[
         (performances["player_name"] == player_name)

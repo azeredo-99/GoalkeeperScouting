@@ -17,6 +17,7 @@ export function PlayerResultCard({
   onCompare,
   onRemove,
   showShortlistToggle = true,
+  scoutingProfileId,
 }: {
   entity: PlayerEntity;
   onToggleCompare?: (entity: PlayerEntity) => void;
@@ -24,6 +25,12 @@ export function PlayerResultCard({
   onCompare?: (entity: PlayerEntity) => void;
   onRemove?: (entity: PlayerEntity) => void;
   showShortlistToggle?: boolean;
+  // Perfil ativo em Discover (predefinido ou custom, é só o id em
+  // qualquer dos casos) -- propagado para o Player Profile para que o
+  // Scouting Report, mais à frente, o consiga mostrar. Sem isto, a
+  // secção "Scouting Profile" do relatório nunca era alcançável a
+  // partir da navegação normal.
+  scoutingProfileId?: string;
 }) {
   const navigate = useNavigate();
   const { primary, contexts } = entity;
@@ -110,7 +117,10 @@ export function PlayerResultCard({
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button
-            onClick={() => navigate(`/player/${encodeURIComponent(entity.playerName)}`)}
+            onClick={() => {
+              const q = scoutingProfileId ? `?scouting_profile=${encodeURIComponent(scoutingProfileId)}` : "";
+              navigate(`/player/${encodeURIComponent(entity.playerName)}${q}`);
+            }}
             style={btnPrimary}
           >
             View profile
