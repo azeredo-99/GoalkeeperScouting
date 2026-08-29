@@ -93,7 +93,7 @@ Minutes are computed from real lineup/substitution/red-card events, not estimate
 **Backend** — Python, FastAPI, PostgreSQL, SQLAlchemy, Alembic, pandas, [`statsbombpy`](https://pypi.org/project/statsbombpy/)
 **Frontend** — React 19, TypeScript, Vite
 **Data** — StatsBomb Open Data, Transfermarkt
-**Testing** — pytest (244 tests), TypeScript build checks
+**Testing** — pytest (257 tests), TypeScript build checks
 
 ## Dataset
 
@@ -161,14 +161,13 @@ pytest
 
 - No current-season data source — see above.
 - Player identity currently uses `(player_name, competition_id, season_id)` as the database key, not StatsBomb's stable `player_id`. The most recent audit found zero same-context name collisions across 330 players, but this is a structural risk that grows with the dataset.
-- Custom Scouting Profiles created in the UI live in browser storage only — server-side Discover matching currently supports just the three built-in profiles.
 - Portfolio project — no authentication, no multi-user support, no production deployment.
 
 ## Roadmap
 
-**Done:** dataset expansion (5 competitions, 1,581 matches ingested), Player Profile, Scouting Report, Performance Benchmark, Similar Goalkeepers, Scouting Profiles & Scouting Match, Data Coverage, Shortlist with scout notes.
+**Done:** dataset expansion (5 competitions, 1,581 matches ingested), Player Profile, Scouting Report, Performance Benchmark, Similar Goalkeepers, Scouting Profiles & Scouting Match, Data Coverage, Shortlist with scout notes, custom Scouting Profiles wired into server-side Discover matching.
 
-**Next:** a `player_id`-based identity model, a legally-usable current-season source (if one exists), deeper historical StatsBomb coverage, and wiring custom profiles into server-side matching.
+**Next:** a `player_id`-based identity model, a legally-usable current-season source (if one exists), deeper historical StatsBomb coverage.
 
 ---
 
