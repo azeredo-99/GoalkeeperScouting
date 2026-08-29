@@ -10,6 +10,7 @@ nunca o inverso, nunca um "score do jogador" independente de perfil.
 Puro, sem I/O, sem dependência de FastAPI/pandas -- testável isolado.
 """
 
+import json
 from dataclasses import dataclass, field
 
 
@@ -125,3 +126,64 @@ PROFILE_REGISTRY: dict[str, ScoutingProfile] = {p.id: p for p in DEFAULT_PROFILE
 
 def get_profile(profile_id: str) -> ScoutingProfile | None:
     return PROFILE_REGISTRY.get(profile_id)
+
+
+def parse_custom_profile(raw: str) -> ScoutingProfile:
+    """
+    Constrói um ScoutingProfile a partir da definição enviada inline pelo
+    frontend (mesma forma que `_profile_dict()` em main.py produz) --
+    um perfil que o scout criou/editou no browser e que nunca é
+    persistido no servidor (ver customScoutingProfiles.ts no frontend:
+    localStorage é a fonte da verdade). O backend só o vê por pedido,
+    tal como reavalia os predefinidos a cada pedido -- nenhum estado
+    novo, nenhuma tabela nova.
+
+    Reaproveita inteiramente a validação já existente em
+    Preference/ScoutingProfile (metrica desconhecida, peso negativo,
+    minimum > maximum) -- não duplica regras.
+
+    Levanta ValueError em qualquer entrada inválida ou vazia de
+    critérios úteis. Quem chamar isto (a API) tem de transformar isso
+    num erro explícito para o utilizador -- nunca num perfil "vazio"
+    aplicado silenciosamente.
+    """
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Custom profile is not valid JSON: {exc}") from exc
+
+    if not isinstance(data, dict):
+        raise ValueError("Custom profile must be a JSON object.")
+
+    raw_preferences = data.get("preferences")
+    if not isinstance(raw_preferences, list) or not raw_preferences:
+        raise ValueError("Custom profile must include a non-empty 'preferences' list.")
+
+    preferences: list[Preference] = []
+    for entry in raw_preferences:
+        if not isinstance(entry, dict) or "metric" not in entry:
+            raise ValueError("Each preference must be an object with a 'metric'.")
+        try:
+            preferences.append(
+                Preference(
+                    metric=entry["metric"],
+                    enabled=bool(entry.get("enabled", False)),
+                    weight=float(entry.get("weight", 1.0)),
+                    minimum=None if entry.get("minimum") is None else float(entry["minimum"]),
+                    maximum=None if entry.get("maximum") is None else float(entry["maximum"]),
+                )
+            )
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"Invalid preference for '{entry.get('metric')}': {exc}") from exc
+
+    profile = ScoutingProfile(
+        id=str(data.get("id") or "custom"),
+        name=str(data.get("name") or "Custom profile"),
+        description=str(data.get("description") or ""),
+        preferences={p.metric: p for p in preferences},
+    )
+
+    if not profile.enabled_preferences():
+        raise ValueError("Custom profile has no enabled preferences -- enable at least one before matching.")
+
+    return profile

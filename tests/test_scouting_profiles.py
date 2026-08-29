@@ -4,6 +4,8 @@ modelo de Scouting Profile. Não testam matching (ver
 test_scouting_match.py) nem UI.
 """
 
+import json
+
 import pytest
 
 from gk_scouting.scouting_profiles import (
@@ -12,6 +14,7 @@ from gk_scouting.scouting_profiles import (
     Preference,
     ScoutingProfile,
     get_profile,
+    parse_custom_profile,
 )
 
 
@@ -80,3 +83,133 @@ def test_get_profile_returns_registered_profile():
 
 def test_profile_registry_matches_default_profiles():
     assert set(PROFILE_REGISTRY.keys()) == {p.id for p in DEFAULT_PROFILES}
+
+
+# --- parse_custom_profile ------------------------------------------------
+# Cobre o fecho do gap real: perfis criados pelo scout no frontend
+# (localStorage) têm de ser aceites e validados pelo backend com as
+# mesmas regras dos predefinidos -- nunca um "perfil vazio" silencioso.
+
+def test_parse_custom_profile_builds_valid_profile():
+    raw = json.dumps(
+        {
+            "id": "custom-1",
+            "name": "My profile",
+            "description": "Test",
+            "preferences": [
+                {"metric": "save_pct", "enabled": True, "weight": 2.0, "minimum": 65.0, "maximum": None},
+                {"metric": "age", "enabled": False, "weight": 1.0, "minimum": None, "maximum": None},
+            ],
+        }
+    )
+    profile = parse_custom_profile(raw)
+    assert profile.id == "custom-1"
+    assert profile.name == "My profile"
+    enabled = profile.enabled_preferences()
+    assert len(enabled) == 1
+    assert enabled[0].metric == "save_pct"
+    assert enabled[0].weight == 2.0
+    assert enabled[0].minimum == 65.0
+
+
+def test_parse_custom_profile_defaults_missing_id_and_name():
+    raw = json.dumps({"preferences": [{"metric": "save_pct", "enabled": True}]})
+    profile = parse_custom_profile(raw)
+    assert profile.id == "custom"
+    assert profile.name == "Custom profile"
+
+
+def test_parse_custom_profile_rejects_invalid_json():
+    with pytest.raises(ValueError):
+        parse_custom_profile("{not json")
+
+
+def test_parse_custom_profile_rejects_non_object():
+    with pytest.raises(ValueError):
+        parse_custom_profile(json.dumps([1, 2, 3]))
+
+
+def test_parse_custom_profile_rejects_missing_preferences():
+    with pytest.raises(ValueError):
+        parse_custom_profile(json.dumps({"id": "x", "name": "x", "description": "", "preferences": []}))
+
+
+def test_parse_custom_profile_rejects_preference_without_metric():
+    raw = json.dumps({"preferences": [{"enabled": True, "weight": 1.0}]})
+    with pytest.raises(ValueError):
+        parse_custom_profile(raw)
+
+
+def test_parse_custom_profile_rejects_unknown_metric():
+    raw = json.dumps(
+        {
+            "id": "custom-2",
+            "preferences": [{"metric": "not_a_real_metric", "enabled": True, "weight": 1.0}],
+        }
+    )
+    with pytest.raises(ValueError):
+        parse_custom_profile(raw)
+
+
+def test_parse_custom_profile_rejects_negative_weight():
+    raw = json.dumps(
+        {
+            "id": "custom-3",
+            "preferences": [{"metric": "save_pct", "enabled": True, "weight": -2.0}],
+        }
+    )
+    with pytest.raises(ValueError):
+        parse_custom_profile(raw)
+
+
+def test_parse_custom_profile_rejects_minimum_above_maximum():
+    raw = json.dumps(
+        {
+            "id": "custom-4",
+            "preferences": [
+                {"metric": "save_pct", "enabled": True, "weight": 1.0, "minimum": 80.0, "maximum": 50.0}
+            ],
+        }
+    )
+    with pytest.raises(ValueError):
+        parse_custom_profile(raw)
+
+
+def test_parse_custom_profile_rejects_all_disabled_preferences():
+    raw = json.dumps(
+        {
+            "id": "custom-5",
+            "preferences": [{"metric": "save_pct", "enabled": False, "weight": 1.0}],
+        }
+    )
+    with pytest.raises(ValueError):
+        parse_custom_profile(raw)
+
+
+def test_parse_custom_profile_matches_like_a_builtin_profile():
+    """Um perfil custom, depois de parseado, passa pela mesma função de
+    matching que os predefinidos -- sem caminho especial, sem lógica
+    duplicada."""
+    from gk_scouting.scouting_match import match_player_to_profile
+
+    raw = json.dumps(
+        {
+            "id": "custom-6",
+            "name": "Shot stopper",
+            "preferences": [{"metric": "save_pct", "enabled": True, "weight": 1.0, "minimum": 70.0}],
+        }
+    )
+    profile = parse_custom_profile(raw)
+    player = {
+        "save_pct": 80.0,
+        "sweeper_actions_p90": None,
+        "avg_distance_from_goal": None,
+        "pass_success_pct": None,
+        "long_ball_pct": None,
+        "age": None,
+        "market_value_eur": None,
+        "minutes": None,
+    }
+    result = match_player_to_profile(player, profile)
+    assert result.matched_count == 1
+    assert result.match_score == 100.0

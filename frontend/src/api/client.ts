@@ -46,6 +46,11 @@ export interface DiscoverFilters {
   minPassSuccessPct?: number;
   minLongBallPct?: number;
   scoutingProfileId?: string;
+  // Definição completa de um perfil criado/editado pelo scout no browser
+  // (localStorage, ver lib/customScoutingProfiles.ts) -- o backend nunca
+  // guarda isto, só o reavalia por pedido, tal como os predefinidos.
+  // Tem prioridade sobre `scoutingProfileId` quando ambos são passados.
+  customProfile?: ScoutingProfile;
 }
 
 export function discoverPlayers(filters: DiscoverFilters): Promise<{ results: PerformanceRow[] }> {
@@ -62,7 +67,11 @@ export function discoverPlayers(filters: DiscoverFilters): Promise<{ results: Pe
   if (filters.minPassSuccessPct !== undefined)
     params.set("min_pass_success_pct", String(filters.minPassSuccessPct));
   if (filters.minLongBallPct !== undefined) params.set("min_long_ball_pct", String(filters.minLongBallPct));
-  if (filters.scoutingProfileId !== undefined) params.set("scouting_profile_id", filters.scoutingProfileId);
+  if (filters.customProfile !== undefined) {
+    params.set("custom_profile", JSON.stringify(filters.customProfile));
+  } else if (filters.scoutingProfileId !== undefined) {
+    params.set("scouting_profile_id", filters.scoutingProfileId);
+  }
   return getJson(`/api/players/discover?${params.toString()}`);
 }
 

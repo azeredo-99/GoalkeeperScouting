@@ -6,6 +6,7 @@ import type { PerformanceRow, ScoutingProfile } from "../api/types";
 import { PlayerResultCard } from "../components/PlayerResultCard";
 import { EmptyState, ErrorState, LoadingState } from "../components/States";
 import { groupByPlayer, type PlayerEntity } from "../lib/players";
+import { useCustomProfiles } from "../lib/customScoutingProfiles";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 type Mode = "search" | "discover";
@@ -70,9 +71,27 @@ export function Discover() {
   // "Discover by profile": quando ativo, cada resultado ganha
   // `scoutingMatch` (calculado no backend, ver discover_players) e o
   // sort "Scouting Match" fica disponível. Pode chegar pré-selecionado
-  // vindo de /scouting-profiles ("Use profile").
+  // vindo de /scouting-profiles ("Use profile") -- tanto para um
+  // predefinido como para um perfil custom do scout (localStorage).
   const [scoutingProfiles, setScoutingProfiles] = useState<ScoutingProfile[]>([]);
   const [scoutingProfileId, setScoutingProfileId] = useState<string>(searchParams.get("scouting_profile") ?? "");
+  const customProfiles = useCustomProfiles();
+
+  // `scoutingProfileId` identifica UM perfil entre duas listas de
+  // proveniência diferente (predefinidos do backend vs. custom do
+  // scout, ambos guardados por id). Resolvido aqui, uma vez, para que
+  // runDiscover nunca tenha de adivinhar de onde veio o id -- e para
+  // que um id que já não existe em lado nenhum (ex.: perfil custom
+  // apagado entretanto) seja detetável em vez de silenciosamente
+  // enviado como "sem perfil".
+  const selectedBuiltInProfile = useMemo(
+    () => scoutingProfiles.find((p) => p.id === scoutingProfileId) ?? null,
+    [scoutingProfiles, scoutingProfileId]
+  );
+  const selectedCustomProfile = useMemo(
+    () => customProfiles.find((p) => p.id === scoutingProfileId) ?? null,
+    [customProfiles, scoutingProfileId]
+  );
 
   useEffect(() => {
     getCompetitions()
@@ -153,6 +172,9 @@ export function Discover() {
     setLoading(true);
     setError(null);
     try {
+      if (scoutingProfileId && !selectedBuiltInProfile && !selectedCustomProfile) {
+        throw new Error("The selected scouting profile is no longer available. Pick another one.");
+      }
       const { results } = await discoverPlayers({
         competitionId: filters.competitionId === "" ? undefined : filters.competitionId,
         seasonId: filters.seasonId === "" ? undefined : filters.seasonId,
@@ -163,7 +185,8 @@ export function Discover() {
         minSweeperActionsP90: filters.minSweeperP90 === "" ? undefined : filters.minSweeperP90,
         minPassSuccessPct: filters.minPassPct === "" ? undefined : filters.minPassPct,
         minLongBallPct: filters.minLongBallPct === "" ? undefined : filters.minLongBallPct,
-        scoutingProfileId: scoutingProfileId || undefined,
+        scoutingProfileId: selectedBuiltInProfile ? scoutingProfileId : undefined,
+        customProfile: selectedCustomProfile ?? undefined,
       });
       setResults(results);
       if (scoutingProfileId) setSortKey("scoutingMatch");
@@ -309,6 +332,15 @@ export function Discover() {
                     {p.name}
                   </option>
                 ))}
+                {customProfiles.length > 0 && (
+                  <optgroup label="Custom">
+                    {customProfiles.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                )}
               </select>
             </Field>
             {scoutingProfileId && (

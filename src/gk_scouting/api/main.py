@@ -38,7 +38,13 @@ from gk_scouting.benchmarking import DEFAULT_MIN_MINUTES, build_benchmark
 from gk_scouting.comparison import build_comparison_table
 from gk_scouting.data_coverage import build_coverage
 from gk_scouting.presentation import player_context_rows
-from gk_scouting.scouting_profiles import DEFAULT_PROFILES, PREFERENCE_METRICS, ScoutingProfile, get_profile
+from gk_scouting.scouting_profiles import (
+    DEFAULT_PROFILES,
+    PREFERENCE_METRICS,
+    ScoutingProfile,
+    get_profile,
+    parse_custom_profile,
+)
 from gk_scouting.scouting_match import ScoutingMatchResult, match_player_to_profile
 from gk_scouting.similarity_engine import (
     STYLE_FEATURES,
@@ -322,6 +328,7 @@ def discover_players(
     min_pass_success_pct: float | None = None,
     min_long_ball_pct: float | None = None,
     scouting_profile_id: str | None = None,
+    custom_profile: str | None = None,
 ):
     performances, _, market_lookup = _state()
     enriched = enrich_with_market(performances, market_lookup)
@@ -340,10 +347,23 @@ def discover_players(
 
     # Scouting Match é opt-in e nunca substitui os resultados nem a
     # ordenação por omissão -- só anexa `scoutingMatch` a cada linha
-    # quando um perfil válido é pedido explicitamente (Fase Discover
-    # integration). Um profile_id desconhecido é ignorado silenciosamente
-    # (comportamento sem perfil), nunca um erro 404 que quebre a pesquisa.
-    profile = get_profile(scouting_profile_id) if scouting_profile_id else None
+    # quando um perfil válido é pedido explicitamente. `custom_profile`
+    # (definição inline enviada pelo frontend a partir do localStorage do
+    # scout -- ver customScoutingProfiles.ts) tem prioridade sobre
+    # `scouting_profile_id` quando ambos chegam. Um perfil inválido ou
+    # desconhecido é sempre um erro explícito (400/404) -- nunca um
+    # resultado sem perfil aplicado a passar por "nenhum perfil pedido".
+    if custom_profile:
+        try:
+            profile = parse_custom_profile(custom_profile)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+    elif scouting_profile_id:
+        profile = get_profile(scouting_profile_id)
+        if profile is None:
+            raise HTTPException(status_code=404, detail=f"Unknown scouting profile: '{scouting_profile_id}'")
+    else:
+        profile = None
 
     results = []
     for _, row in candidates.iterrows():
