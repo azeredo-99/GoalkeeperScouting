@@ -1,0 +1,5 @@
+# Fallback de SPA: a app usa BrowserRouter (react-router-dom), por isso
+# uma navegação direta ou um refresh em /discover, /player/:name, etc.
+# tem de continuar a servir index.html -- sem isto, o Netlify devolve
+# 404 em qualquer rota que não seja a raiz.
+/*  /index.html  200

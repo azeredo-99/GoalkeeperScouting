@@ -22,5 +22,11 @@ alembic>=1.13,<2
 psycopg2-binary>=2.9,<3
 sqlalchemy>=2.0,<3
 
+# API (FastAPI + servidor ASGI). Antes instalados à parte no setup local
+# ("pip install fastapi uvicorn[standard]" fora deste ficheiro) -- fixados
+# aqui para que o deploy (Render) instale tudo a partir de um único ficheiro.
+fastapi>=0.141,<1
+uvicorn[standard]>=0.52,<1
+
 # Desenvolvimento (não necessário para executar a aplicação).
 pytest>=9.1,<10
