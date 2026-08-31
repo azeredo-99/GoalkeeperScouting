@@ -9,7 +9,11 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      # Só localhost -- sem isto, o Docker publica em 0.0.0.0 (todas as
+      # interfaces), tornando a base de dados alcançável fora desta
+      # máquina consoante o router/firewall. Nada aqui precisa de
+      # acesso de fora do próprio computador.
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - gk_scouting_pgdata:/var/lib/postgresql/data
     healthcheck:
