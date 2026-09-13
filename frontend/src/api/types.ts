@@ -26,6 +26,12 @@ export interface PerformanceMetrics {
   distribution: Distribution;
 }
 
+// "statsbomb" (eventos brutos) ou "fbref" (estatísticas já agregadas
+// pela FBref, época 2024/25). As duas fontes calculam algumas métricas
+// com o mesmo nome de forma diferente -- ver nota em Data Coverage.
+// Nunca combinadas num único peer group/cálculo sem isso ser explícito.
+export type DataSource = "statsbomb" | "fbref";
+
 export interface PerformanceRow {
   playerName: string;
   competitionId: number;
@@ -38,6 +44,7 @@ export interface PerformanceRow {
   marketValueEur: number | null;
   metrics: PerformanceMetrics;
   scoutingMatch?: ScoutingMatch;
+  source: DataSource;
 }
 
 // Nunca inclui idade -- um jogador pode ter várias linhas de
@@ -156,6 +163,7 @@ export interface DataCoverageContext {
   seasonId: number;
   competitionName: string;
   seasonName: string;
+  source: DataSource;
   totalGoalkeepers: number;
   benchmarkableGoalkeepers: number;
   status: CoverageStatus;

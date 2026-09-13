@@ -9,7 +9,7 @@ import type {
   ScoutingMatch,
   SimilarityResponse,
 } from "../api/types";
-import { SampleIndicator } from "../components/ContextBadge";
+import { SampleIndicator, SourceBadge } from "../components/ContextBadge";
 import { BenchmarkSection } from "../components/Benchmark";
 import { DimensionSnapshot } from "../components/DimensionSnapshot";
 import { MetricCard, MetricGroup } from "../components/MetricGroup";
@@ -257,7 +257,10 @@ export function ScoutingReport() {
 
         <div className="card">
           <div className="section-title">Performance context</div>
-          <div style={{ fontSize: 16, fontWeight: 700 }}>{active.competitionName}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ fontSize: 16, fontWeight: 700 }}>{active.competitionName}</div>
+            {active.source === "fbref" && <SourceBadge />}
+          </div>
           <div style={{ fontSize: 13, color: "var(--color-text-secondary)", marginBottom: "var(--space-3)" }}>
             {active.seasonName}
           </div>

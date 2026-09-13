@@ -1,0 +1,39 @@
+,,,,nation,pos,age,born,Playing Time,Playing Time,Playing Time,Playing Time,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks
+,,,,,,,,MP,Starts,Min,90s,GA,GA90,SoTA,Saves,Save%,W,D,L,CS,CS%,PKatt,PKA,PKsv,PKm,Save%
+league,season,team,player,,,,,,,,,,,,,,,,,,,,,,,
+FRA-Ligue 1,2425,Angers,Melvin Zinga,FRA,GK,22,2002,1,1,90,1.0,2,2.0,4,2,50.0,0,0,1,0,0.0,1,1,0,0,0.0
+FRA-Ligue 1,2425,Angers,Yahia Fofana,CIV,GK,23,2000,33,33,2970,33.0,51,1.55,187,136,72.7,10,6,17,7,21.2,4,3,0,1,0.0
+FRA-Ligue 1,2425,Auxerre,Donovan Léon,GUF,GK,31,1992,32,32,2880,32.0,48,1.5,169,121,71.6,11,8,13,9,28.1,6,5,1,0,16.7
+FRA-Ligue 1,2425,Auxerre,Théo De Percin,MTQ,GK,23,2001,2,2,180,2.0,3,1.5,8,5,62.5,0,1,1,1,50.0,2,1,1,0,50.0
+FRA-Ligue 1,2425,Brest,Grégoire Coudert,FRA,GK,25,1999,2,2,180,2.0,5,2.5,14,9,64.3,1,0,1,0,0.0,0,0,0,0,
+FRA-Ligue 1,2425,Brest,Marco Bizot,NED,GK,33,1991,32,32,2880,32.0,54,1.69,130,76,58.5,14,5,13,10,31.3,10,8,1,1,11.1
+FRA-Ligue 1,2425,Le Havre,Arthur Desmas,FRA,GK,30,1994,18,18,1620,18.0,38,2.11,94,56,59.6,5,0,13,3,16.7,3,2,1,0,33.3
+FRA-Ligue 1,2425,Le Havre,Mathieu Gorgelin,FRA,GK,33,1990,16,16,1440,16.0,33,2.06,83,50,60.2,5,4,7,1,6.3,3,3,0,0,0.0
+FRA-Ligue 1,2425,Lens,Brice Samba,FRA,GK,30,1994,15,15,1350,15.0,14,0.93,54,40,74.1,6,6,3,7,46.7,4,4,0,0,0.0
+FRA-Ligue 1,2425,Lens,Hervé Koffi,BFA,GK,27,1996,5,5,450,5.0,8,1.6,26,18,69.2,1,0,4,0,0.0,2,2,0,0,0.0
+FRA-Ligue 1,2425,Lens,Mathew Ryan,AUS,GK,32,1992,14,14,1260,14.0,17,1.21,60,43,71.7,8,1,5,6,42.9,3,2,1,0,33.3
+FRA-Ligue 1,2425,Lille,Lucas Chevalier,FRA,GK,22,2001,34,34,3060,34.0,36,1.06,127,94,71.7,17,9,8,11,32.4,4,4,0,0,0.0
+FRA-Ligue 1,2425,Lyon,Lucas Perri,BRA,GK,26,1997,33,33,2970,33.0,44,1.33,160,116,72.5,17,6,10,10,30.3,3,3,0,0,0.0
+FRA-Ligue 1,2425,Lyon,Rémy Descamps,FRA,GK,28,1996,1,1,90,1.0,2,2.0,6,4,66.7,0,0,1,0,0.0,0,0,0,0,
+FRA-Ligue 1,2425,Marseille,Gerónimo Rulli,ARG,GK,32,1992,34,34,3060,34.0,47,1.38,136,89,65.4,20,5,9,5,14.7,6,3,3,0,50.0
+FRA-Ligue 1,2425,Monaco,Philipp Köhn,SUI,GK,26,1998,19,19,1710,19.0,19,1.0,64,45,70.3,11,5,3,8,42.1,1,1,0,0,0.0
+FRA-Ligue 1,2425,Monaco,Radosław Majecki,POL,GK,24,1999,15,15,1350,15.0,22,1.47,65,43,66.2,7,2,6,3,20.0,2,2,0,0,0.0
+FRA-Ligue 1,2425,Montpellier,Benjamin Lecomte,FRA,GK,33,1991,30,30,2700,30.0,68,2.27,176,108,61.4,3,4,23,1,3.3,7,6,1,0,14.3
+FRA-Ligue 1,2425,Montpellier,Dimitry Bertaud,COD,GK,26,1998,4,4,360,4.0,11,2.75,21,10,47.6,1,0,3,0,0.0,2,2,0,0,0.0
+FRA-Ligue 1,2425,Nantes,Alban Lafont,CIV,GK,25,1999,12,12,1080,12.0,19,1.58,51,32,62.7,2,4,6,2,16.7,3,3,0,0,0.0
+FRA-Ligue 1,2425,Nantes,Anthony Lopes,POR,GK,33,1990,18,18,1563,17.4,26,1.5,73,47,64.4,5,6,7,3,16.7,5,4,0,1,0.0
+FRA-Ligue 1,2425,Nantes,Patrik Carlgren,SWE,GK,32,1992,5,4,417,4.6,7,1.51,28,21,75.0,1,2,1,1,25.0,0,0,0,0,
+FRA-Ligue 1,2425,Nice,Marcin Bułka,POL,GK,24,1999,34,34,3060,34.0,41,1.21,161,120,74.5,17,9,8,8,23.5,3,2,1,0,33.3
+FRA-Ligue 1,2425,PSG,Arnau Tenas,ESP,GK,23,2001,1,1,90,1.0,1,1.0,4,3,75.0,1,0,0,0,0.0,0,0,0,0,
+FRA-Ligue 1,2425,PSG,Gianluigi Donnarumma,ITA,GK,25,1999,24,24,2091,23.2,25,1.08,75,50,66.7,18,5,1,4,16.7,1,1,0,0,0.0
+FRA-Ligue 1,2425,PSG,Matvei Safonov,RUS,GK,25,1999,10,9,879,9.8,9,0.92,26,17,65.4,7,1,1,3,33.3,2,2,0,0,0.0
+FRA-Ligue 1,2425,Reims,Yehvann Diouf,SEN,GK,24,1999,34,34,3060,34.0,47,1.38,176,133,73.3,8,9,17,7,20.6,5,4,1,0,20.0
+FRA-Ligue 1,2425,Rennes,Brice Samba,FRA,GK,30,1994,17,17,1529,17.0,27,1.59,85,58,68.2,7,0,10,5,29.4,3,1,2,0,66.7
+FRA-Ligue 1,2425,Rennes,Gauthier Gallon,FRA,GK,31,1993,1,0,45,0.5,0,0.0,0,0,,0,0,0,0,,0,0,0,0,
+FRA-Ligue 1,2425,Rennes,Steve Mandanda,FRA,GK,39,1985,18,17,1486,16.5,24,1.45,53,29,54.7,6,2,9,6,35.3,3,2,1,0,33.3
+FRA-Ligue 1,2425,Saint-Étienne,Gautier Larsonneur,FRA,GK,27,1997,34,34,3060,34.0,77,2.26,210,133,63.3,8,6,20,5,14.7,15,13,2,0,13.3
+FRA-Ligue 1,2425,Strasbourg,Karl-Johan Johnsson,SWE,GK,34,1990,3,3,270,3.0,6,2.0,22,16,72.7,1,1,1,0,0.0,1,1,0,0,0.0
+FRA-Ligue 1,2425,Strasbourg,Đorđe Petrović,SRB,GK,24,1999,31,31,2790,31.0,38,1.23,148,110,74.3,15,8,8,10,32.3,8,7,1,0,12.5
+FRA-Ligue 1,2425,Toulouse,Guillaume Restes,FRA,GK,19,2005,29,29,2543,28.3,36,1.27,94,58,61.7,9,7,13,9,31.0,2,1,1,0,50.0
+FRA-Ligue 1,2425,Toulouse,Kjetil Haug,NOR,GK,26,1998,6,5,498,5.5,7,1.27,16,9,56.3,2,2,1,1,20.0,0,0,0,0,
+FRA-Ligue 1,2425,Toulouse,Álex Domínguez,ESP,GK,26,1998,1,0,19,0.2,0,0.0,0,0,,0,0,0,1,,0,0,0,0,

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getPlayerBenchmark, getPlayerProfile, getSimilarity } from "../api/client";
 import type { BenchmarkResponse, PerformanceRow, PlayerProfileResponse, SimilarityResponse } from "../api/types";
-import { SampleIndicator } from "../components/ContextBadge";
+import { SampleIndicator, SourceBadge } from "../components/ContextBadge";
 import { addToShortlist, removeFromShortlist, useIsShortlisted } from "../lib/shortlist";
 import { buildTakeaways } from "../lib/takeaways";
 import type { CSSProperties, ReactNode } from "react";
@@ -236,7 +236,10 @@ export function PlayerProfile() {
               </Field>
             </div>
           )}
-          <div style={{ fontSize: 18, fontWeight: 700 }}>{active.competitionName}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ fontSize: 18, fontWeight: 700 }}>{active.competitionName}</div>
+            {active.source === "fbref" && <SourceBadge />}
+          </div>
           <div style={{ fontSize: 13, color: "var(--color-text-secondary)", marginBottom: "var(--space-3)" }}>
             {active.seasonName}
           </div>

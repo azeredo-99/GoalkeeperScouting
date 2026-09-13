@@ -35,6 +35,29 @@ export function ContextBadge({
   );
 }
 
+// Discreto de propósito -- a fonte é uma nota de proveniência, não uma
+// segunda hierarquia visual. Só aparece para FBref (StatsBomb continua
+// a ser o caso base, sem badge, ver PlayerProfile.tsx/ScoutingReport.tsx).
+export function SourceBadge() {
+  return (
+    <span
+      style={{
+        fontSize: 10,
+        fontWeight: 700,
+        letterSpacing: "0.04em",
+        textTransform: "uppercase",
+        color: "var(--color-text-tertiary)",
+        border: "1px solid var(--color-border-soft)",
+        borderRadius: 4,
+        padding: "2px 6px",
+      }}
+      title="This performance sample comes from FBref's aggregated season statistics, not StatsBomb event data — see Data Coverage for details."
+    >
+      Source: FBref
+    </span>
+  );
+}
+
 export type SampleSize = "unknown" | "large" | "medium" | "small";
 
 export function sampleSize(minutes: number | null): SampleSize {

@@ -48,6 +48,15 @@ class GKPerformance(Base):
     competition_id: Mapped[int] = mapped_column(Integer, nullable=False)
     season_id: Mapped[int] = mapped_column(Integer, nullable=False)
 
+    # --- proveniência -----------------------------------------------------
+    # "statsbomb" (evento a evento, ver metrics.py) ou "fbref" (estatísticas
+    # já agregadas pela FBref/Sports Reference). As duas fontes calculam
+    # métricas com o mesmo nome de forma DIFERENTE -- esta coluna existe
+    # precisamente para nunca as misturar num peer group sem isso ser
+    # explícito. `ingest()` (db/ingest.py) marca sempre "statsbomb" antes de
+    # gravar; a ingestão FBref marca "fbref" na sua própria pipeline.
+    source: Mapped[str] = mapped_column(String, nullable=False, server_default="statsbomb")
+
     # --- minutos (sempre presente: um jogador só aparece na tabela se
     #     tiver minutos -- ver goalkeeper_minutes_by_match em metrics.py) --
     minutes: Mapped[float] = mapped_column(Float, nullable=False)

@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getDataCoverage } from "../api/client";
-import type { CoverageStatus, DataCoverageResponse } from "../api/types";
+import type { CoverageStatus, DataCoverageResponse, DataSource } from "../api/types";
 import { ErrorState, LoadingState } from "../components/States";
 
 const STATUS_LABEL: Record<CoverageStatus, string> = {
@@ -16,6 +16,11 @@ const STATUS_COLOR: Record<CoverageStatus, string> = {
   partial: "var(--color-text-secondary)",
   limited: "var(--color-warning)",
   insufficient: "var(--color-danger)",
+};
+
+const SOURCE_LABEL: Record<DataSource, string> = {
+  statsbomb: "StatsBomb",
+  fbref: "FBref",
 };
 
 // Vista interna -- não é uma página de marketing. Mostra exatamente o
@@ -38,6 +43,16 @@ export function DataCoverage() {
 
   useEffect(load, []);
 
+  // Totais por fonte, calculados aqui a partir dos contextos já
+  // devolvidos -- nenhum número novo do backend, só uma soma do que já
+  // está na resposta (cada contexto já tem `source`, ver data_coverage.py).
+  const sourceTotals = useMemo(() => {
+    if (!data) return null;
+    const totals: Record<DataSource, number> = { statsbomb: 0, fbref: 0 };
+    for (const c of data.contexts) totals[c.source] += c.totalGoalkeepers;
+    return totals;
+  }, [data]);
+
   return (
     <div>
       <h1 style={{ fontSize: 26, fontWeight: 800, margin: "0 0 4px" }}>Data Coverage</h1>
@@ -48,8 +63,23 @@ export function DataCoverage() {
       {loading && <LoadingState label="Loading coverage…" />}
       {error && <ErrorState message={error} onRetry={load} />}
 
-      {!loading && !error && data && (
+      {!loading && !error && data && sourceTotals && (
         <>
+          <div style={{ display: "flex", gap: "var(--space-5)", marginBottom: "var(--space-4)" }}>
+            <div>
+              <div className="label">StatsBomb performances</div>
+              <div className="tabular" style={{ fontSize: 20, fontWeight: 700 }}>
+                {sourceTotals.statsbomb}
+              </div>
+            </div>
+            <div>
+              <div className="label">FBref performances</div>
+              <div className="tabular" style={{ fontSize: 20, fontWeight: 700 }}>
+                {sourceTotals.fbref}
+              </div>
+            </div>
+          </div>
+
           <div style={{ fontSize: 12, color: "var(--color-text-tertiary)", marginBottom: "var(--space-4)" }}>
             Benchmarkable = goalkeepers with ≥{data.minimumMinutes.toFixed(0)} minutes in that context (the same
             threshold used by Performance Benchmark).
@@ -60,6 +90,7 @@ export function DataCoverage() {
                 <tr>
                   <th style={thStyle}>Competition</th>
                   <th style={thStyle}>Season</th>
+                  <th style={thStyle}>Source</th>
                   <th style={thStyle}>Goalkeepers</th>
                   <th style={thStyle}>Benchmarkable</th>
                   <th style={thStyle}>Status</th>
@@ -70,6 +101,7 @@ export function DataCoverage() {
                   <tr key={`${c.competitionId}-${c.seasonId}`}>
                     <td style={tdStyle}>{c.competitionName}</td>
                     <td style={tdStyle}>{c.seasonName}</td>
+                    <td style={tdStyle}>{SOURCE_LABEL[c.source]}</td>
                     <td className="tabular" style={tdStyle}>
                       {c.totalGoalkeepers}
                     </td>
@@ -83,6 +115,32 @@ export function DataCoverage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div
+            className="card"
+            style={{ marginTop: "var(--space-5)", fontSize: 12, color: "var(--color-text-secondary)", lineHeight: 1.6 }}
+          >
+            <div className="section-title" style={{ marginBottom: "var(--space-2)" }}>
+              About the two data sources
+            </div>
+            <p style={{ margin: "0 0 8px" }}>
+              <strong>StatsBomb</strong> contexts are computed from raw match events. <strong>FBref</strong> contexts
+              (the 2024/2025 seasons above) use FBref's own already-aggregated season statistics — Shot Stopping only;
+              FBref's basic goalkeeping table does not include Sweeping or Distribution data, so those fields are left
+              empty for FBref performances rather than shown as zero.
+            </p>
+            <p style={{ margin: "0 0 8px" }}>
+              The two sources are never combined in the same benchmark or similarity comparison — each context
+              belongs entirely to one source. But a metric with the same name isn't always the same definition:
+              StatsBomb's <code>shots faced</code> counts every shot faced (on target or not); FBref's is{" "}
+              <code>SoTA</code> (Shots on Target Against) only.
+            </p>
+            <p style={{ margin: 0 }}>
+              Player identity is currently based on name matching, not a stable ID — the same goalkeeper can appear
+              under a slightly different name spelling between sources (e.g. a full legal name in one, a shorter
+              common name in the other) and won't automatically be linked as the same person.
+            </p>
           </div>
         </>
       )}

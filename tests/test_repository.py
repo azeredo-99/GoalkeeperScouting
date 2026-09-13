@@ -36,6 +36,7 @@ def _row(player_name, competition_id, season_id, minutes, **overrides):
         competition_id=competition_id,
         season_id=season_id,
         minutes=minutes,
+        source="statsbomb",
     )
     row.update(overrides)
     return row

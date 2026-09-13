@@ -70,15 +70,19 @@ def _events_with_two_contexts():
 def _real_table():
     """
     A tabela real produzida por build_scouting_table, sem qualquer
-    alteração à função -- é isto que table_to_records recebe em produção.
+    alteração à função, com `source` acrescentado tal como `ingest()`
+    faz antes de chamar table_to_records -- é isto que table_to_records
+    recebe em produção.
     """
     events = _events_with_two_contexts()
-    return build_scouting_table(
+    table = build_scouting_table(
         events,
         build_gk_events(events),
         build_gk_passes(events),
         context_columns=CONTEXT_COLUMNS,
     )
+    table["source"] = "statsbomb"
+    return table
 
 
 # ===========================================================================

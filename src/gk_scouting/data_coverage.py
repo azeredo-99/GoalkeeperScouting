@@ -39,10 +39,17 @@ def build_coverage(performances: pd.DataFrame, min_minutes: float = DEFAULT_MIN_
     grouped = performances.groupby(["competition_id", "season_id"])
     for (competition_id, season_id), group in grouped:
         benchmarkable = int((group["minutes"] >= min_minutes).sum())
+        # Um contexto (competition_id, season_id) é sempre inteiramente
+        # de uma só fonte -- os IDs sintéticos FBref nunca coincidem com
+        # IDs StatsBomb (ver fbref_mapping.py). `source` reflete isso,
+        # nunca inventa nada: se por alguma razão futura um contexto
+        # tivesse as duas fontes, isto mostraria a primeira encontrada,
+        # o que seria um sinal de que a garantia de não-mistura falhou.
         rows.append(
             {
                 "competition_id": int(competition_id),
                 "season_id": int(season_id),
+                "source": group["source"].iloc[0],
                 "total_goalkeepers": int(len(group)),
                 "benchmarkable_goalkeepers": benchmarkable,
                 "status": _status(benchmarkable),

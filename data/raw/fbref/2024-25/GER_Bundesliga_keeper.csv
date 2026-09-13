@@ -1,0 +1,41 @@
+,,,,nation,pos,age,born,Playing Time,Playing Time,Playing Time,Playing Time,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks
+,,,,,,,,MP,Starts,Min,90s,GA,GA90,SoTA,Saves,Save%,W,D,L,CS,CS%,PKatt,PKA,PKsv,PKm,Save%
+league,season,team,player,,,,,,,,,,,,,,,,,,,,,,,
+GER-Bundesliga,2425,Augsburg,Finn Dahmen,GER,GK,26,1998,19,19,1710,19.0,19,1.0,84,65,77.4,7,6,6,9,47.4,2,2,0,0,0.0
+GER-Bundesliga,2425,Augsburg,Nediljko Labrović,CRO,GK,24,1999,15,15,1350,15.0,32,2.13,74,42,56.8,4,4,7,2,13.3,3,3,0,0,0.0
+GER-Bundesliga,2425,Bayern Munich,Daniel Peretz,ISR,GK,24,2000,3,3,270,3.0,5,1.67,7,2,28.6,2,0,1,0,0.0,0,0,0,0,
+GER-Bundesliga,2425,Bayern Munich,Jonas Urbig,GER,GK,20,2003,8,8,720,8.0,12,1.5,28,16,57.1,4,3,1,2,25.0,0,0,0,0,
+GER-Bundesliga,2425,Bayern Munich,Manuel Neuer,GER,GK,38,1986,22,22,1980,22.0,15,0.68,46,30,67.4,18,4,0,13,59.1,2,1,0,1,0.0
+GER-Bundesliga,2425,Bayern Munich,Sven Ulreich,GER,GK,35,1988,1,1,90,1.0,0,0.0,0,0,,1,0,0,1,100.0,0,0,0,0,
+GER-Bundesliga,2425,Bochum,Patrick Drewes,GER,GK,31,1993,21,21,1890,21.0,46,2.19,99,53,53.5,3,4,14,3,14.3,5,3,2,0,40.0
+GER-Bundesliga,2425,Bochum,Timo Horn,GER,GK,31,1993,13,13,1170,13.0,22,1.69,55,33,60.0,3,3,7,3,23.1,1,0,0,1,
+GER-Bundesliga,2425,Dortmund,Alexander Meyer,GER,GK,33,1991,2,2,180,2.0,4,2.0,11,7,63.6,1,0,1,0,0.0,0,0,0,0,
+GER-Bundesliga,2425,Dortmund,Gregor Kobel,SUI,GK,26,1997,32,32,2880,32.0,47,1.47,128,84,63.3,16,6,10,7,21.9,4,4,0,0,0.0
+GER-Bundesliga,2425,Frankfurt,Kauã Santos,BRA,GK,21,2003,9,8,765,8.5,12,1.41,49,37,75.5,5,1,2,3,37.5,1,1,0,0,0.0
+GER-Bundesliga,2425,Frankfurt,Kevin Trapp,GER,GK,34,1990,26,26,2295,25.5,34,1.33,116,82,70.7,12,8,6,6,23.1,2,0,2,0,100.0
+GER-Bundesliga,2425,Freiburg,Florian Müller,GER,GK,26,1997,9,8,753,8.4,16,1.91,31,15,48.4,4,1,3,1,12.5,2,2,0,0,0.0
+GER-Bundesliga,2425,Freiburg,Noah Atubolu,GER,GK,22,2002,26,26,2307,25.6,37,1.44,118,82,68.6,12,6,8,10,38.5,2,0,2,0,100.0
+GER-Bundesliga,2425,Gladbach,Jonas Omlin,SUI,GK,30,1994,12,11,978,10.9,29,2.67,75,46,61.3,2,1,8,1,9.1,3,2,1,0,33.3
+GER-Bundesliga,2425,Gladbach,Moritz Nicolas,GER,GK,26,1997,19,19,1639,18.2,25,1.37,93,68,73.1,9,4,6,4,21.1,5,5,0,0,0.0
+GER-Bundesliga,2425,Gladbach,Tiago Cardoso,LUX,GK,18,2006,5,4,380,4.2,3,0.71,23,20,87.0,2,1,1,2,50.0,0,0,0,0,
+GER-Bundesliga,2425,Gladbach,Tobias Sippel,GER,GK,36,1988,1,0,59,0.7,3,4.58,4,1,25.0,0,0,0,0,,0,0,0,0,
+GER-Bundesliga,2425,Heidenheim,Frank Feller,GER,GK,20,2004,2,1,121,1.3,0,0.0,2,2,100.0,1,0,0,2,200.0,0,0,0,0,
+GER-Bundesliga,2425,Heidenheim,Kevin Müller,GER,GK,33,1991,33,33,2939,32.7,64,1.96,170,106,62.4,7,5,21,8,24.2,6,6,0,0,0.0
+GER-Bundesliga,2425,Hoffenheim,Luca Philipp,GER,GK,23,2000,6,6,540,6.0,15,2.5,35,20,57.1,1,3,2,0,0.0,1,1,0,0,0.0
+GER-Bundesliga,2425,Hoffenheim,Oliver Baumann,GER,GK,34,1990,28,28,2520,28.0,53,1.89,137,88,61.3,6,8,14,4,14.3,5,2,3,0,60.0
+GER-Bundesliga,2425,Holstein Kiel,Thomas Dähne,GER,GK,30,1994,9,9,810,9.0,19,2.11,55,36,65.5,2,2,5,0,0.0,3,2,1,0,33.3
+GER-Bundesliga,2425,Holstein Kiel,Timon Weiner,GER,GK,25,1999,25,25,2250,25.0,61,2.44,141,82,56.7,4,5,16,2,8.0,4,4,0,0,0.0
+GER-Bundesliga,2425,Leverkusen,Lukáš Hrádecký,FIN,GK,34,1989,29,29,2610,29.0,38,1.31,123,85,69.1,16,11,2,6,20.7,4,4,0,0,0.0
+GER-Bundesliga,2425,Leverkusen,Matej Kovar,CZE,GK,24,2000,5,5,450,5.0,5,1.0,17,12,70.6,3,1,1,3,60.0,0,0,0,0,
+GER-Bundesliga,2425,Mainz 05,Lasse Rieß,GER,GK,23,2001,2,2,180,2.0,2,1.0,8,6,75.0,1,1,0,0,0.0,0,0,0,0,
+GER-Bundesliga,2425,Mainz 05,Robin Zentner,GER,GK,29,1994,32,32,2880,32.0,41,1.28,142,101,71.1,13,9,10,9,28.1,5,4,1,0,20.0
+GER-Bundesliga,2425,RB Leipzig,Maarten Vandevoordt,BEL,GK,22,2002,6,4,429,4.8,9,1.89,21,12,57.1,1,1,2,0,0.0,0,0,0,0,
+GER-Bundesliga,2425,RB Leipzig,Péter Gulácsi,HUN,GK,34,1990,30,30,2631,29.2,39,1.33,136,99,71.3,12,11,7,14,46.7,3,2,1,0,33.3
+GER-Bundesliga,2425,St Pauli,Ben Alexander Voll,GER,GK,23,2000,2,1,91,1.0,2,1.98,6,4,66.7,0,1,0,0,0.0,0,0,0,0,
+GER-Bundesliga,2425,St Pauli,Nikola Vasilj,BIH,GK,28,1995,33,33,2969,33.0,39,1.18,132,93,70.5,8,7,18,9,27.3,5,1,4,0,80.0
+GER-Bundesliga,2425,Stuttgart,Alexander Nübel,GER,GK,27,1996,34,34,3060,34.0,53,1.56,137,84,61.3,14,8,12,7,20.6,3,2,1,0,33.3
+GER-Bundesliga,2425,Union Berlin,Alexander Schwolow,GER,GK,32,1992,6,6,540,6.0,13,2.17,28,15,53.6,2,0,4,0,0.0,1,1,0,0,0.0
+GER-Bundesliga,2425,Union Berlin,Frederik Rønnow,DEN,GK,31,1992,28,28,2520,28.0,37,1.32,109,72,66.1,8,10,10,8,28.6,5,1,4,0,80.0
+GER-Bundesliga,2425,Werder Bremen,Michael Zetterer,GER,GK,29,1995,34,34,3060,34.0,57,1.68,158,103,63.9,14,9,11,10,29.4,3,3,0,0,0.0
+GER-Bundesliga,2425,Wolfsburg,Kamil Grabara,POL,GK,25,1999,29,29,2585,28.7,49,1.71,137,89,64.2,9,7,13,5,17.2,3,2,1,0,33.3
+GER-Bundesliga,2425,Wolfsburg,Marius Müller,GER,GK,31,1993,6,5,475,5.3,5,0.95,23,18,78.3,2,3,0,1,20.0,0,0,0,0,

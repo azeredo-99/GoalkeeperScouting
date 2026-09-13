@@ -1,0 +1,52 @@
+,,,,nation,pos,age,born,Playing Time,Playing Time,Playing Time,Playing Time,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks
+,,,,,,,,MP,Starts,Min,90s,GA,GA90,SoTA,Saves,Save%,W,D,L,CS,CS%,PKatt,PKA,PKsv,PKm,Save%
+league,season,team,player,,,,,,,,,,,,,,,,,,,,,,,
+ITA-Serie A,2425,Atalanta,Juan Musso,ARG,GK,30,1994,1,1,90,1.0,0,0.0,4,4,100.0,1,0,0,1,100.0,0,0,0,0,
+ITA-Serie A,2425,Atalanta,Marco Carnesecchi,ITA,GK,24,2000,34,34,3060,34.0,34,1.0,132,98,74.2,19,7,8,13,38.2,2,2,0,0,0.0
+ITA-Serie A,2425,Atalanta,Rui Patrício,POR,GK,36,1988,3,3,270,3.0,3,1.0,14,11,78.6,2,1,0,1,33.3,0,0,0,0,
+ITA-Serie A,2425,Bologna,Federico Ravaglia,ITA,GK,24,1999,12,11,1056,11.7,14,1.19,24,10,41.7,5,2,4,4,36.4,1,1,0,0,0.0
+ITA-Serie A,2425,Bologna,Łukasz Skorupski,POL,GK,33,1991,27,27,2364,26.3,33,1.26,83,51,60.2,11,12,4,8,29.6,2,1,1,0,50.0
+ITA-Serie A,2425,Cagliari,Alen Sherri,ALB,GK,26,1997,7,7,621,6.9,11,1.59,31,20,64.5,1,2,4,1,14.3,0,0,0,0,
+ITA-Serie A,2425,Cagliari,Elia Caprile,ITA,GK,22,2001,18,18,1620,18.0,22,1.22,68,46,67.6,5,4,9,5,27.8,1,1,0,0,0.0
+ITA-Serie A,2425,Cagliari,Giuseppe Ciocci,ITA,GK,22,2002,1,0,9,0.1,0,0.0,0,0,,0,0,0,0,,0,0,0,0,
+ITA-Serie A,2425,Cagliari,Simone Scuffet,ITA,GK,28,1996,13,13,1170,13.0,23,1.77,56,33,58.9,3,3,7,1,7.7,5,5,0,0,0.0
+ITA-Serie A,2425,Como,Emil Audero,IDN,GK,27,1997,8,8,720,8.0,18,2.25,35,17,48.6,2,2,4,0,0.0,4,4,0,0,0.0
+ITA-Serie A,2425,Como,Jean Butez,FRA,GK,29,1995,19,18,1666,18.5,20,1.08,69,49,71.0,8,4,6,5,27.8,2,2,0,0,0.0
+ITA-Serie A,2425,Como,Pepe Reina,ESP,GK,41,1982,12,12,1034,11.5,14,1.22,42,28,66.7,3,4,5,2,16.7,1,1,0,0,0.0
+ITA-Serie A,2425,Empoli,Devis Vásquez,COL,GK,26,1998,32,32,2880,32.0,45,1.41,127,82,64.6,6,12,14,6,18.8,2,1,1,0,50.0
+ITA-Serie A,2425,Empoli,Jacopo Seghetti,ITA,GK,19,2005,1,1,90,1.0,3,3.0,6,3,50.0,0,0,1,0,0.0,0,0,0,0,
+ITA-Serie A,2425,Empoli,Marco Silvestri,ITA,GK,33,1991,5,5,450,5.0,11,2.2,27,16,59.3,0,1,4,0,0.0,0,0,0,0,
+ITA-Serie A,2425,Fiorentina,David de Gea,ESP,GK,33,1990,35,35,3150,35.0,38,1.09,134,96,71.6,19,5,11,11,31.4,3,1,2,0,66.7
+ITA-Serie A,2425,Fiorentina,Pietro Terracciano,ITA,GK,34,1990,3,3,270,3.0,3,1.0,14,10,78.6,0,3,0,1,33.3,0,0,0,0,
+ITA-Serie A,2425,Genoa,Benjamin Siegrist,SUI,GK,32,1992,2,2,152,1.7,2,1.18,12,10,83.3,1,1,0,0,0.0,0,0,0,0,
+ITA-Serie A,2425,Genoa,Daniele Sommariva,ITA,GK,27,1997,1,0,28,0.3,1,3.21,3,2,66.7,0,0,0,0,,0,0,0,0,
+ITA-Serie A,2425,Genoa,Nicola Leali,ITA,GK,31,1993,29,29,2610,29.0,31,1.07,112,83,72.3,8,10,11,10,34.5,4,3,1,0,25.0
+ITA-Serie A,2425,Genoa,Pierluigi Gollini,ITA,GK,29,1995,7,7,630,7.0,15,2.14,32,17,53.1,1,2,4,1,14.3,4,3,1,0,25.0
+ITA-Serie A,2425,Hellas Verona,Lorenzo Montipò,ITA,GK,28,1996,36,36,3240,36.0,64,1.78,164,100,61.0,9,7,20,8,22.2,4,2,1,1,33.3
+ITA-Serie A,2425,Hellas Verona,Simone Perilli,ITA,GK,29,1995,2,2,180,2.0,2,1.0,11,9,81.8,1,0,1,0,0.0,0,0,0,0,
+ITA-Serie A,2425,Inter,Josep Martinez,ESP,GK,26,1998,5,5,450,5.0,3,0.6,15,12,80.0,4,1,0,3,60.0,0,0,0,0,
+ITA-Serie A,2425,Inter,Yann Sommer,SUI,GK,35,1988,33,33,2970,33.0,32,0.97,116,84,72.4,20,8,5,13,39.4,4,3,1,0,25.0
+ITA-Serie A,2425,Juventus,Mattia Perin,ITA,GK,31,1992,5,5,450,5.0,3,0.6,16,13,81.3,2,3,0,3,60.0,0,0,0,0,
+ITA-Serie A,2425,Juventus,Michele Di Gregorio,ITA,GK,27,1997,33,33,2970,33.0,32,0.97,99,71,67.7,16,13,4,14,42.4,5,5,0,0,0.0
+ITA-Serie A,2425,Lazio,Christos Mandas,GRE,GK,22,2001,9,9,810,9.0,7,0.78,27,20,74.1,3,5,1,4,44.4,0,0,0,0,
+ITA-Serie A,2425,Lazio,Ivan Provedel,ITA,GK,30,1994,29,29,2610,29.0,42,1.45,95,53,55.8,15,6,8,5,17.2,4,4,0,0,0.0
+ITA-Serie A,2425,Lecce,Wladimiro Falcone,ITA,GK,29,1995,38,38,3420,38.0,58,1.53,177,127,67.2,8,10,20,9,23.7,10,8,1,1,11.1
+ITA-Serie A,2425,Milan,Marco Sportiello,ITA,GK,32,1992,2,1,126,1.4,2,1.43,6,4,66.7,1,0,0,1,100.0,0,0,0,0,
+ITA-Serie A,2425,Milan,Mike Maignan,FRA,GK,29,1995,37,37,3294,36.6,41,1.12,139,98,70.5,17,9,11,13,35.1,2,1,1,0,50.0
+ITA-Serie A,2425,Monza,Andrea Mazza,ITA,GK,20,2004,1,0,8,0.1,0,0.0,0,0,,0,0,0,0,,0,0,0,0,
+ITA-Serie A,2425,Monza,Semuel Pizzignacco,ITA,GK,22,2001,9,8,736,8.2,17,2.08,40,23,57.5,1,2,5,1,12.5,0,0,0,0,
+ITA-Serie A,2425,Monza,Stefano Turati,ITA,GK,22,2001,30,30,2676,29.7,52,1.75,145,93,64.1,2,7,21,2,6.7,4,2,2,0,50.0
+ITA-Serie A,2425,Napoli,Alex Meret,ITA,GK,27,1997,34,34,3005,33.4,25,0.75,84,59,70.2,21,9,4,17,50.0,4,1,2,1,66.7
+ITA-Serie A,2425,Napoli,Elia Caprile,ITA,GK,22,2001,4,3,325,3.6,1,0.28,8,7,87.5,3,0,0,3,100.0,0,0,0,0,
+ITA-Serie A,2425,Napoli,Simone Scuffet,ITA,GK,28,1996,1,1,90,1.0,1,1.0,4,3,75.0,0,1,0,0,0.0,0,0,0,0,
+ITA-Serie A,2425,Parma,Leandro Chichizola,ARG,GK,34,1990,1,1,90,1.0,3,3.0,7,4,57.1,0,0,1,0,0.0,0,0,0,0,
+ITA-Serie A,2425,Parma,Zion Suzuki,JPN,GK,21,2002,36,36,3240,36.8,53,1.47,148,95,64.2,7,15,14,7,19.4,5,5,0,0,0.0
+ITA-Serie A,2425,Roma,Mile Svilar,SRB,GK,24,1999,38,38,3420,38.0,35,0.92,153,118,77.1,20,9,9,16,42.1,4,4,0,0,0.0
+ITA-Serie A,2425,Torino,Alberto Paleari,ITA,GK,31,1992,1,1,90,1.0,3,3.0,7,4,57.1,0,0,1,0,0.0,0,0,0,0,
+ITA-Serie A,2425,Torino,Vanja Milinković-Savić,SRB,GK,27,1997,37,37,3330,37.0,42,1.14,173,131,75.7,10,14,13,10,27.0,7,3,4,0,57.1
+ITA-Serie A,2425,Udinese,Daniele Padelli,ITA,GK,38,1985,1,1,90,1.0,0,0.0,3,3,100.0,1,0,0,1,100.0,0,0,0,0,
+ITA-Serie A,2425,Udinese,Maduka Okoye,NGA,GK,24,1999,25,25,2250,25.0,40,1.6,113,73,64.6,6,4,15,4,16.0,5,4,0,1,0.0
+ITA-Serie A,2425,Udinese,Razvan Sava,ROU,GK,22,2002,12,12,1080,12.0,16,1.33,54,38,70.4,5,4,3,4,33.3,3,3,0,0,0.0
+ITA-Serie A,2425,Venezia,Filip Stankovic,SRB,GK,22,2002,16,16,1367,15.2,23,1.51,84,61,72.6,2,6,8,0,0.0,5,4,1,0,20.0
+ITA-Serie A,2425,Venezia,Ionuț Radu,ROU,GK,27,1997,15,15,1350,15.0,18,1.2,63,47,71.4,2,7,6,4,26.7,3,3,0,0,0.0
+ITA-Serie A,2425,Venezia,Jesse Joronen,FIN,GK,31,1993,8,7,703,7.8,15,1.92,42,27,64.3,1,1,5,2,28.6,3,3,0,0,0.0

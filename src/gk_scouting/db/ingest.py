@@ -166,6 +166,10 @@ def ingest(
         context_columns=CONTEXT_COLUMNS,
     )
 
+    # Todas as linhas produzidas por este pipeline vêm de eventos StatsBomb,
+    # nunca de outra fonte -- ver a nota de proveniência em db/models.py.
+    table["source"] = "statsbomb"
+
     records = table_to_records(table)
     statement = build_upsert_statement(records)
 

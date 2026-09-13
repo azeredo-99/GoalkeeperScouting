@@ -37,6 +37,7 @@ from gk_scouting.discovery import (
 from gk_scouting.benchmarking import DEFAULT_MIN_MINUTES, build_benchmark
 from gk_scouting.comparison import build_comparison_table
 from gk_scouting.data_coverage import build_coverage
+from gk_scouting.fbref_mapping import FBREF_COMPETITIONS, FBREF_SEASON_ID, FBREF_SEASON_NAME
 from gk_scouting.presentation import player_context_rows
 from gk_scouting.scouting_profiles import (
     DEFAULT_PROFILES,
@@ -95,18 +96,26 @@ def _state():
 @lru_cache(maxsize=1)
 def _competition_names() -> dict:
     """
-    (competition_id, season_id) -> (competition_name, season_name), a
-    partir da mesma fonte real que download_extended_data.py já usa
-    (StatsBomb open-data). Nunca inventa nomes -- se a chamada de rede
-    falhar, devolve um dicionário vazio e o chamador usa um rótulo
-    neutro em vez de mostrar o id interno ao utilizador.
+    (competition_id, season_id) -> (competition_name, season_name).
+
+    Duas fontes, nunca inventadas: o catálogo real do StatsBomb
+    open-data (mesma fonte que download_extended_data.py já usa -- se a
+    chamada de rede falhar, essa parte fica vazia, nunca inventada) e os
+    IDs sintéticos das ligas FBref 2024/25 (`fbref_mapping.
+    FBREF_COMPETITIONS`, mesma constante usada pela ingestão -- nunca
+    duplicada à mão aqui). Sem isto, qualquer linha `source="fbref"`
+    apareceria como "Unnamed competition" no frontend.
     """
+    lookup = {
+        (competition_id, FBREF_SEASON_ID): (name, FBREF_SEASON_NAME)
+        for competition_id, name in FBREF_COMPETITIONS.values()
+    }
+
     try:
         competitions = sb.competitions()
     except Exception:
-        return {}
+        return lookup
 
-    lookup = {}
     for _, row in competitions.iterrows():
         key = (int(row["competition_id"]), int(row["season_id"]))
         lookup[key] = (row["competition_name"], row["season_name"])
@@ -290,6 +299,11 @@ def _row_to_dict(row: pd.Series, market_lookup: dict) -> dict:
         else None,
         "marketValueEur": _clean(market.get("market_value_in_eur")) if market is not None else None,
         "metrics": _metrics_dict(row),
+        # "statsbomb" (eventos) ou "fbref" (estatísticas agregadas,
+        # época 2024/25) -- nunca omitido, para que o frontend possa
+        # sempre mostrar de onde vem uma amostra em vez de apresentar as
+        # duas fontes como indistinguíveis (ver fbref_mapping.py).
+        "source": row.get("source", "statsbomb"),
     }
 
 
@@ -539,6 +553,7 @@ def get_data_coverage():
                 "seasonId": r["season_id"],
                 "competitionName": competition_name,
                 "seasonName": season_name,
+                "source": r["source"],
                 "totalGoalkeepers": r["total_goalkeepers"],
                 "benchmarkableGoalkeepers": r["benchmarkable_goalkeepers"],
                 "status": r["status"],

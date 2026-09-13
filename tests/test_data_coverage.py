@@ -6,10 +6,11 @@ from gk_scouting.data_coverage import build_coverage
 
 
 def _performances():
-    rows = [{"player_name": f"Strong {i}", "competition_id": 1, "season_id": 2024, "minutes": 900.0} for i in range(10)]
-    rows += [{"player_name": f"Partial {i}", "competition_id": 2, "season_id": 2024, "minutes": 900.0} for i in range(6)]
-    rows += [{"player_name": f"Limited {i}", "competition_id": 3, "season_id": 2024, "minutes": 900.0} for i in range(2)]
-    rows += [{"player_name": "Below threshold", "competition_id": 4, "season_id": 2024, "minutes": 100.0}]
+    rows = [{"player_name": f"Strong {i}", "competition_id": 1, "season_id": 2024, "minutes": 900.0, "source": "statsbomb"} for i in range(10)]
+    rows += [{"player_name": f"Partial {i}", "competition_id": 2, "season_id": 2024, "minutes": 900.0, "source": "statsbomb"} for i in range(6)]
+    rows += [{"player_name": f"Limited {i}", "competition_id": 3, "season_id": 2024, "minutes": 900.0, "source": "statsbomb"} for i in range(2)]
+    rows += [{"player_name": "Below threshold", "competition_id": 4, "season_id": 2024, "minutes": 100.0, "source": "statsbomb"}]
+    rows += [{"player_name": f"FBref {i}", "competition_id": 900001, "season_id": 900001, "minutes": 900.0, "source": "fbref"} for i in range(7)]
     return pd.DataFrame(rows)
 
 
@@ -56,4 +57,14 @@ def test_coverage_sorted_by_benchmarkable_descending():
 def test_coverage_never_invents_a_context_not_in_the_data():
     rows = build_coverage(_performances(), min_minutes=450)
     contexts = {(r["competition_id"], r["season_id"]) for r in rows}
-    assert contexts == {(1, 2024), (2, 2024), (3, 2024), (4, 2024)}
+    assert contexts == {(1, 2024), (2, 2024), (3, 2024), (4, 2024), (900001, 900001)}
+
+
+def test_each_context_reports_its_own_source():
+    rows = build_coverage(_performances(), min_minutes=450)
+    statsbomb_row = next(r for r in rows if r["competition_id"] == 1)
+    fbref_row = next(r for r in rows if r["competition_id"] == 900001)
+    assert statsbomb_row["source"] == "statsbomb"
+    assert fbref_row["source"] == "fbref"
+    assert fbref_row["benchmarkable_goalkeepers"] == 7
+    assert fbref_row["status"] == "partial"

@@ -1,0 +1,47 @@
+,,,,nation,pos,age,born,Playing Time,Playing Time,Playing Time,Playing Time,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Performance,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks,Penalty Kicks
+,,,,,,,,MP,Starts,Min,90s,GA,GA90,SoTA,Saves,Save%,W,D,L,CS,CS%,PKatt,PKA,PKsv,PKm,Save%
+league,season,team,player,,,,,,,,,,,,,,,,,,,,,,,
+ENG-Premier League,2425,Arsenal,David Raya,ESP,GK,28,1995,38,38,3420,38.0,34,0.89,120,86,71.7,20,14,4,13,34.2,3,3,0,0,0.0
+ENG-Premier League,2425,Aston Villa,Emiliano Martínez,ARG,GK,31,1992,37,37,3194,35.5,47,1.32,146,99,67.8,18,9,10,8,21.6,2,1,1,0,50.0
+ENG-Premier League,2425,Aston Villa,Robin Olsen,SWE,GK,34,1990,4,1,226,2.5,6,2.39,14,8,57.1,1,0,0,1,100.0,1,1,0,0,0.0
+ENG-Premier League,2425,Bournemouth,Kepa Arrizabalaga,ESP,GK,29,1994,31,31,2790,31.0,39,1.26,136,97,71.3,13,7,11,8,25.8,4,4,0,0,0.0
+ENG-Premier League,2425,Bournemouth,Mark Travers,IRL,GK,25,1999,5,5,450,5.0,5,1.0,25,20,80.0,2,2,1,1,20.0,0,0,0,0,
+ENG-Premier League,2425,Bournemouth,Neto,BRA,GK,35,1989,2,2,180,2.0,2,1.0,13,11,84.6,0,2,0,0,0.0,0,0,0,0,
+ENG-Premier League,2425,Brentford,Hákon Valdimarsson,ISL,GK,22,2001,2,1,145,1.6,2,1.24,5,3,60.0,0,0,1,1,100.0,0,0,0,0,
+ENG-Premier League,2425,Brentford,Mark Flekken,NED,GK,31,1993,37,37,3275,36.4,55,1.51,207,152,73.4,16,8,13,8,21.6,1,1,0,0,0.0
+ENG-Premier League,2425,Brighton,Bart Verbruggen,NED,GK,21,2002,36,36,3240,36.0,58,1.61,140,89,58.6,14,13,9,7,19.4,9,9,0,0,0.0
+ENG-Premier League,2425,Brighton,Jason Steele,ENG,GK,33,1990,2,2,180,2.0,1,0.5,4,3,75.0,2,0,0,1,50.0,0,0,0,0,
+ENG-Premier League,2425,Chelsea,Filip Jørgensen,DEN,GK,22,2002,6,6,540,6.0,9,1.5,29,20,69.0,3,0,3,1,16.7,1,1,0,0,0.0
+ENG-Premier League,2425,Chelsea,Robert Sánchez,ESP,GK,26,1997,32,32,2880,32.0,34,1.06,128,94,73.4,17,9,6,10,31.3,5,4,1,0,20.0
+ENG-Premier League,2425,Crystal Palace,Dean Henderson,ENG,GK,27,1997,38,38,3420,38.0,51,1.34,152,102,66.4,13,14,11,11,28.9,2,1,1,0,50.0
+ENG-Premier League,2425,Everton,Jordan Pickford,ENG,GK,30,1994,38,38,3420,38.0,44,1.16,163,119,73.0,11,15,12,12,31.6,2,0,2,0,100.0
+ENG-Premier League,2425,Fulham,Bernd Leno,GER,GK,32,1992,38,38,3420,38.0,54,1.42,158,107,65.8,15,9,14,5,13.2,4,3,1,0,25.0
+ENG-Premier League,2425,Ipswich Town,Alex Palmer,ENG,GK,27,1996,13,13,1170,13.0,30,2.31,75,45,60.0,1,3,9,0,0.0,1,1,0,0,0.0
+ENG-Premier League,2425,Ipswich Town,Arijanet Muric,KVX,GK,25,1998,18,18,1620,18.0,33,1.83,103,70,68.0,2,6,10,1,5.6,3,3,0,0,0.0
+ENG-Premier League,2425,Ipswich Town,Christian Walton,ENG,GK,28,1995,7,7,630,7.0,19,2.71,39,20,51.3,1,1,5,1,14.3,2,2,0,0,0.0
+ENG-Premier League,2425,Leicester City,Danny Ward,WAL,GK,31,1993,2,1,135,1.5,6,4.0,10,4,40.0,0,0,1,0,0.0,0,0,0,0,
+ENG-Premier League,2425,Leicester City,Jakub Stolarczyk,POL,GK,23,2000,10,10,900,10.0,16,1.6,44,28,63.6,3,1,6,2,20.0,0,0,0,0,
+ENG-Premier League,2425,Leicester City,Mads Hermansen,DEN,GK,24,2000,27,27,2385,26.5,58,2.19,160,102,63.8,3,6,18,1,3.7,4,3,1,0,25.0
+ENG-Premier League,2425,Liverpool,Alisson,BRA,GK,31,1992,28,28,2508,27.9,29,1.04,106,74,72.6,18,7,3,10,35.7,1,1,0,0,0.0
+ENG-Premier League,2425,Liverpool,Caoimhín Kelleher,IRL,GK,25,1998,10,10,900,10.0,12,1.2,37,24,67.6,7,2,1,4,40.0,1,0,1,0,100.0
+ENG-Premier League,2425,Liverpool,Vitezslav Jaros,CZE,GK,23,2001,1,0,12,0.1,0,0.0,1,1,100.0,0,0,0,1,,0,0,0,0,
+ENG-Premier League,2425,Manchester City,Ederson Moraes,BRA,GK,30,1993,26,26,2320,25.8,26,1.01,80,54,67.5,16,4,6,10,38.5,2,2,0,0,0.0
+ENG-Premier League,2425,Manchester City,Stefan Ortega,GER,GK,31,1992,13,12,1100,12.2,18,1.47,51,33,64.7,5,4,3,3,25.0,2,2,0,0,0.0
+ENG-Premier League,2425,Manchester Utd,Altay Bayındır,TUR,GK,26,1998,4,4,360,4.0,10,2.5,18,8,44.4,1,0,3,1,25.0,0,0,0,0,
+ENG-Premier League,2425,Manchester Utd,André Onana,CMR,GK,28,1996,34,34,3060,34.0,44,1.29,129,88,65.9,10,9,15,9,26.5,4,3,1,0,25.0
+ENG-Premier League,2425,Newcastle,Martin Dúbravka,SVK,GK,35,1989,10,10,900,10.0,12,1.2,41,29,70.7,7,0,3,5,50.0,0,0,0,0,
+ENG-Premier League,2425,Newcastle,Nick Pope,ENG,GK,32,1992,28,28,2520,28.0,35,1.25,122,87,71.3,13,6,9,8,28.6,2,1,1,0,50.0
+ENG-Premier League,2425,Nottingham,Matz Sels,BEL,GK,32,1992,38,38,3420,38.0,46,1.21,163,119,71.8,19,8,11,13,34.2,3,3,0,0,0.0
+ENG-Premier League,2425,Southampton,Aaron Ramsdale,ENG,GK,26,1998,30,30,2700,30.0,66,2.2,189,123,65.1,2,5,23,3,10.0,7,5,2,0,28.6
+ENG-Premier League,2425,Southampton,Alex McCarthy,ENG,GK,34,1989,5,5,450,5.0,13,2.6,37,24,64.9,0,0,5,0,0.0,2,2,0,0,0.0
+ENG-Premier League,2425,Southampton,Joe Lumley,ENG,GK,29,1995,3,3,270,3.0,7,2.33,20,13,65.0,0,1,2,0,0.0,0,0,0,0,
+ENG-Premier League,2425,Tottenham,Antonín Kinský,CZE,GK,21,2003,6,6,540,6.0,11,1.83,35,24,68.6,1,0,5,1,16.7,0,0,0,0,
+ENG-Premier League,2425,Tottenham,Brandon Austin,ENG,GK,25,1999,1,1,90,1.0,2,2.0,4,2,50.0,0,0,1,0,0.0,0,0,0,0,
+ENG-Premier League,2425,Tottenham,Fraser Forster,ENG,GK,36,1988,7,7,630,7.0,15,2.14,42,28,64.3,1,2,4,1,14.3,2,2,0,0,0.0
+ENG-Premier League,2425,Tottenham,Guglielmo Vicario,ITA,GK,27,1996,24,24,2160,24.0,37,1.54,105,68,64.8,9,3,12,4,16.7,1,1,0,0,0.0
+ENG-Premier League,2425,West Ham,Alphonse Areola,FRA,GK,31,1993,26,25,2260,25.1,41,1.63,121,80,66.1,5,7,13,5,20.0,0,0,0,0,
+ENG-Premier League,2425,West Ham,Łukasz Fabiański,POL,GK,39,1985,14,13,1160,12.9,21,1.63,71,50,70.4,6,3,4,3,23.1,3,3,0,0,0.0
+ENG-Premier League,2425,Wolves,Daniel Bentley,ENG,GK,31,1993,2,2,180,2.0,4,2.0,12,8,66.7,1,0,1,1,50.0,0,0,0,0,
+ENG-Premier League,2425,Wolves,José Sá,POR,GK,31,1993,29,29,2609,29.0,48,1.66,117,69,59.0,11,5,13,7,24.1,7,5,2,0,28.6
+ENG-Premier League,2425,Wolves,Sam Johnstone,ENG,GK,31,1993,7,7,630,7.0,17,2.43,40,23,57.5,0,1,6,0,0.0,2,2,0,0,0.0
+ENG-Premier League,2425,Wolves,Tom King,WAL,GK,29,1995,1,0,1,0.0,0,0.0,0,0,,0,0,0,0,,0,0,0,0,
