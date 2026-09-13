@@ -18,7 +18,7 @@ Most of the dataset is computed from raw StatsBomb match events — saves, sweep
 
 ## See it in action
 
-Here's a walkthrough of a real scouting session, screenshotted straight from the running app against the live dataset. (Screenshots predate the FBref 2024/25 integration below — the app itself already reflects it.)
+Here's a walkthrough of a real scouting session, screenshotted straight from the running app against the live dataset.
 
 ### 1. Start on Discover
 
@@ -31,6 +31,10 @@ Search for a specific goalkeeper by name, or switch to "Discover by profile" to 
 Everything about one goalkeeper, in one specific competition/season sample — market context, a performance snapshot, plain-language takeaways, and a peer-group benchmark with real percentiles (never a global "how good is this keeper" score).
 
 ![Player Profile](docs/screenshots/player-profile.png)
+
+The same page handles an incomplete sample just as honestly. Jordan Pickford's 2024/25 Premier League season comes from FBref (see [Data](#data)) — a small "Source: FBref" label marks it, Shot Stopping and its benchmark percentile are real, and Sweeping/Distribution show `N/A — no recorded actions` rather than a fabricated `0`, because that source genuinely doesn't have those fields yet.
+
+![Player Profile — FBref source, partial data](docs/screenshots/player-profile-fbref.png)
 
 ### 3. Find Similar Goalkeepers
 
@@ -64,7 +68,7 @@ A single, print-ready page combining the snapshot, takeaways, full metric breakd
 
 ### 8. And know exactly how much to trust it
 
-The Data Coverage page shows, per competition/season, how many goalkeepers the system actually has and how many clear the benchmarking threshold — no invented numbers, no hiding a thin sample.
+The Data Coverage page shows, per competition/season, how many goalkeepers the system actually has and how many clear the benchmarking threshold — no invented numbers, no hiding a thin sample. It also names the source of every context (StatsBomb or FBref) and explains, in plain language, where the two sources differ.
 
 ![Data Coverage](docs/screenshots/data-coverage.png)
 
