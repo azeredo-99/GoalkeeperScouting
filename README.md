@@ -190,7 +190,7 @@ pytest
 
 ## Author
 
-**Guilherme Azeredo** — Computer Systems Engineering graduate interested in software development, data, and football analytics.
+**Guilherme Azeredo** 
 
 [GitHub](https://github.com/azeredo-99) · [LinkedIn](https://www.linkedin.com/in/guilherme-azeredo-a11bb0254/)
 
