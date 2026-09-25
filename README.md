@@ -2,6 +2,8 @@
 
 > A data-driven scouting platform focused entirely on goalkeepers — real event data, real statistical benchmarking, and explainable scouting preferences instead of a black-box rating.
 
+**🔗 Live demo: [goalkeeper-scouting.onrender.com](https://goalkeeper-scouting.onrender.com)** — try *Jan Oblak* or *Manuel Neuer* on the Discover page.
+
 This is a personal portfolio project. It's built on free, open football data (StatsBomb Open Data) and is deliberately designed to be **transparent**: every number you see is traceable to a metric, a sample size, and a real comparison group. There is no single "goalkeeper score."
 
 ---
@@ -176,7 +178,7 @@ pytest
 - **FBref's Advanced Goalkeeping table did not provide the Sweeping/Distribution fields we need for 2024/25 at the time of the export.** It was investigated as the way to fill those fields — the mapping was fully planned, down to the exact FBref column names — but the six target columns (`#OPA`, `#OPA/90`, `AvgDist`, `Att (GK)`, `AvgLen`, `Launch%`) had zero non-null values across all 209 players in all five 2024/25 CSVs, confirmed by inspecting the raw scraped HTML, not assumed from an empty CSV. Implementing the mapping as planned would add code for zero actual data. Left `NULL`, honestly, rather than filled with an approximation — same rule as everywhere else in this project.
 - Player identity currently uses `(player_name, competition_id, season_id)` as the database key, not a stable numeric ID. The most recent audit found zero same-context name collisions, but a name-format mismatch *across* StatsBomb and FBref is confirmed and real: FBref tends to use short/common names ("Alisson"), StatsBomb full legal names ("Alisson Ramsés Becker") — at least 20 such pairs exist in the current dataset, unrecognized as the same person by the app. No fuzzy matching or alias system exists yet.
 - Custom Scouting Profiles created in the UI live in browser storage only — server-side Discover matching still supports just the three built-in profiles.
-- Portfolio project — no authentication, no multi-user support, no production deployment.
+- Portfolio project — no authentication, no multi-user support. The public demo runs as a single free Render service (Docker: FastAPI serving the React build, data snapshot in SQLite); custom Scouting Profiles and the Shortlist live in your browser only.
 
 ## Roadmap
 
