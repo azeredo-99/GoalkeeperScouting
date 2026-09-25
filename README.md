@@ -140,8 +140,8 @@ The four StatsBomb "strong" contexts are full **2015/16 season** releases (380 m
 ## Local Setup
 
 ```bash
-git clone https://github.com/azeredo-99/Goalkeeper-Scouting.git
-cd Goalkeeper-Scouting
+git clone https://github.com/azeredo-99/GoalkeeperScouting.git
+cd GoalkeeperScouting
 
 python -m venv .venv
 .venv\Scripts\activate          # Windows
