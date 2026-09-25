@@ -1,0 +1,10 @@
+# Dependências mínimas para correr só a API (imagem Docker da demo).
+# A lista completa, com Streamlit/matplotlib para a app antiga e pytest,
+# continua em requirements.txt -- as versões aqui seguem os mesmos limites.
+numpy>=2.5,<3
+pandas>=3.0,<4
+requests>=2.34,<3
+statsbombpy>=1.22,<2
+sqlalchemy>=2.0,<3
+fastapi>=0.141,<1
+uvicorn[standard]>=0.52,<1

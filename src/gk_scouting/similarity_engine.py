@@ -88,12 +88,12 @@ def default_min_minutes(minutes) -> int:
 
 
 FEATURE_LABELS = {
-    "sweeper_actions_p90": "proatividade a sair da baliza",
-    "avg_distance_from_goal": "distância média da baliza",
-    "save_pct": "eficácia de defesas",
-    "pass_success_pct": "eficácia de passe",
-    "avg_pass_length": "comprimento médio de passe",
-    "long_ball_pct": "tendência para bola longa",
+    "sweeper_actions_p90": "proactivity off the line",
+    "avg_distance_from_goal": "average distance from goal",
+    "save_pct": "save percentage",
+    "pass_success_pct": "pass success",
+    "avg_pass_length": "average pass length",
+    "long_ball_pct": "long-ball tendency",
 }
 
 
@@ -461,7 +461,7 @@ def explain_similarity(
         target_player not in table.index
         or candidate not in table.index
     ):
-        return "Dados insuficientes para explicar este candidato."
+        return "Not enough data to explain this candidate."
 
     pair = table.loc[
         [target_player, candidate],
@@ -478,7 +478,7 @@ def explain_similarity(
     ]
 
     if not valid:
-        return "Dados insuficientes para explicar este candidato."
+        return "Not enough data to explain this candidate."
 
     z = _robust_zscore(
         table,
@@ -501,8 +501,8 @@ def explain_similarity(
 
     if differences[furthest] < 0.25:
         return (
-            f"{candidate} apresenta um perfil muito próximo de "
-            f"{target_player}, com diferenças reduzidas nas métricas analisadas."
+            f"{candidate} has a very close profile to "
+            f"{target_player}, with only small differences across the analysed metrics."
         )
 
     target_value = z.loc[
@@ -515,14 +515,14 @@ def explain_similarity(
     ]
 
     direction = (
-        "acima"
+        "above"
         if candidate_value > target_value
-        else "abaixo"
+        else "below"
     )
 
     return (
-        f"{candidate} é mais semelhante a {target_player} em "
+        f"{candidate} is most similar to {target_player} in "
         f"{FEATURE_LABELS.get(closest, closest)}, "
-        f"mas está {direction} do perfil de referência em "
+        f"but sits {direction} the reference profile in "
         f"{FEATURE_LABELS.get(furthest, furthest)}."
     )

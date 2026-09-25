@@ -1,20 +1,18 @@
-# Render Blueprint -- deploy via "New +" -> "Blueprint" no dashboard do
-# Render, apontado a este repositório. Define o backend (FastAPI) como
-# um web service gratuito; a base de dados fica fora daqui de propósito
-# (usamos Neon, não o Postgres do Render -- ver README/DEPLOY.md).
+# Render Blueprint -- demo pública num único serviço gratuito.
 #
-# DATABASE_URL não vem definida aqui (sync: false) -- é um segredo,
-# preenche-se manualmente no dashboard do Render depois do deploy, nunca
-# commitado no repositório.
+# "New +" -> "Blueprint" no dashboard do Render, apontado a este
+# repositório. A imagem (Dockerfile) compila o frontend React e serve-o a
+# partir da própria API FastAPI, com os dados de data/demo/ convertidos
+# para SQLite no build: sem base de dados gerida, sem segredos, sem CORS.
+#
+# O plano gratuito adormece após ~15 min sem pedidos; o workflow
+# .github/workflows/keepalive.yml faz um ping periódico (define a variável
+# de repositório DEMO_URL com o URL público do serviço).
 services:
   - type: web
-    name: goalkeeper-scouting-api
-    runtime: python
+    name: goalkeeper-scouting
+    runtime: docker
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn gk_scouting.api.main:app --app-dir src --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: DATABASE_URL
-        sync: false
-      - key: PYTHON_VERSION
-        value: 3.14.3
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true

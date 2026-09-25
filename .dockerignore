@@ -1,0 +1,15 @@
+.git
+.venv
+venv
+**/__pycache__
+.pytest_cache
+.env
+frontend/node_modules
+frontend/dist
+data/*.pkl
+data/*.csv.gz
+data/raw
+data/demo/*.sqlite
+output
+tests
+docs

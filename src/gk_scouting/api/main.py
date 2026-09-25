@@ -17,11 +17,14 @@ jogador para o motor de similaridade, que exige índice único).
 """
 
 import math
+import os
 from functools import lru_cache
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from statsbombpy import sb
 
 from gk_scouting.db.repository import load_gk_performances
@@ -628,7 +631,15 @@ def get_similarity(
             },
         )
     except ValueError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
+        # A mensagem do motor é interna (e em português); o frontend mostra
+        # `detail` diretamente, por isso aqui devolve-se texto para o scout.
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Not enough complete event data for this goalkeeper to compare "
+                "playing style (FBref samples only include shot stopping)."
+            ),
+        ) from exc
 
     similar = similar.head(top_n)
 
@@ -677,3 +688,49 @@ def get_similarity(
         },
         "results": [_result_dict(r) for r in rows],
     }
+
+
+# ---------------------------------------------------------------------------
+# Deploy (demo pública): health check, aquecimento e frontend estático
+# ---------------------------------------------------------------------------
+
+@app.get("/api/health")
+def health():
+    """Resposta barata para o health check do Render e para o keep-alive."""
+    return {"status": "ok"}
+
+
+@app.on_event("startup")
+def _warm_up():
+    # Carrega dados + base Transfermarkt no arranque, para que o primeiro
+    # visitante depois de um cold start não pague esse custo sozinho. Uma
+    # falha aqui não impede o arranque -- o pedido seguinte tenta de novo.
+    try:
+        _state()
+        _competition_names()
+    except Exception as exc:  # noqa: BLE001
+        print(f"Aquecimento falhou (tenta-se no primeiro pedido): {exc}")
+
+
+# Em produção (imagem Docker) o build do React fica em FRONTEND_DIST e é
+# servido pela própria API: um único serviço, um único URL, sem CORS.
+# Localmente a variável não existe e o frontend continua a correr no Vite.
+_FRONTEND_DIST = os.environ.get("FRONTEND_DIST")
+
+if _FRONTEND_DIST and os.path.isdir(_FRONTEND_DIST):
+    app.mount(
+        "/assets",
+        StaticFiles(directory=os.path.join(_FRONTEND_DIST, "assets")),
+        name="assets",
+    )
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def spa(full_path: str):
+        # Ficheiros da raiz do build (favicon, icons...) servidos tal como
+        # estão; qualquer outra rota é do React Router -> index.html.
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not found")
+        candidate = os.path.join(_FRONTEND_DIST, full_path)
+        if full_path and os.path.isfile(candidate):
+            return FileResponse(candidate)
+        return FileResponse(os.path.join(_FRONTEND_DIST, "index.html"))

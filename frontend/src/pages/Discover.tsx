@@ -47,6 +47,10 @@ const EMPTY_FILTERS = {
   minLongBallPct: "" as number | "",
 };
 
+// Atalhos para quem abre a demo pela primeira vez sem saber que nomes
+// existem nos dados -- todos com vários contextos (StatsBomb + FBref).
+const EXAMPLE_KEEPERS = ["Jan Oblak", "Manuel Neuer", "Thibaut Courtois", "Gianluigi Buffon"];
+
 export function Discover() {
   const [searchParams] = useSearchParams();
   const [mode, setMode] = useState<Mode>("search");
@@ -250,12 +254,31 @@ export function Discover() {
       </div>
 
       {mode === "search" ? (
-        <input
-          value={query}
-          onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Search goalkeeper…"
-          style={inputStyle}
-        />
+        <>
+          <input
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            placeholder="Search goalkeeper…"
+            style={inputStyle}
+          />
+          {query.trim() === "" && (
+            <div style={{ marginTop: "var(--space-3)", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+              <span style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>Try:</span>
+              {EXAMPLE_KEEPERS.map((name) => (
+                <button
+                  key={name}
+                  onClick={() => {
+                    setQuery(name);
+                    executeSearch(name);
+                  }}
+                  style={secondaryBtn}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+          )}
+        </>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
           <FilterGroup title="Player">

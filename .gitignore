@@ -33,3 +33,6 @@ output/*
 # OS
 .DS_Store
 Thumbs.db
+
+# Demo pública: SQLite gerado no build a partir de data/demo/gk_performances.csv
+data/demo/*.sqlite

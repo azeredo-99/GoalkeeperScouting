@@ -1,0 +1,19 @@
+name: keep-alive
+
+# O plano gratuito do Render adormece o serviço sem tráfego, e o primeiro
+# visitante esperaria ~1 min pelo arranque. Um ping a cada 10 min mantém a
+# demo acordada (750 h/mês gratuitas chegam para um serviço 24/7).
+# Configurar: Settings -> Secrets and variables -> Actions -> Variables ->
+# DEMO_URL = https://<serviço>.onrender.com
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    if: ${{ vars.DEMO_URL != '' }}
+    steps:
+      - run: curl -fsS --max-time 90 --retry 2 "${{ vars.DEMO_URL }}/api/health"
