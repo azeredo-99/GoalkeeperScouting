@@ -16,4 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ vars.DEMO_URL != '' }}
     steps:
-      - run: curl -fsS --max-time 90 --retry 2 "${{ vars.DEMO_URL }}/api/health"
+      # O Render (free tier) devolve um 502 de imediato enquanto o container
+      # ainda está a arrancar a frio -- não deixa a ligação pendente à espera.
+      # O backoff exponencial por omissão do curl (--retry N, sem --retry-delay)
+      # esgota-se em poucos segundos, muito antes de o arranque a frio (~20-40s,
+      # confirmado manualmente) terminar. --retry-delay fixa um intervalo
+      # constante entre tentativas e --retry-all-errors garante que também
+      # tentamos de novo em erros de rede transitórios, não só nos códigos
+      # HTTP retryable por omissão.
+      - run: curl -fsS --max-time 90 --retry 10 --retry-delay 10 --retry-max-time 180 --retry-all-errors "${{ vars.DEMO_URL }}/api/health"
