@@ -7,8 +7,14 @@ name: keep-alive
 # DEMO_URL = https://<serviço>.onrender.com
 
 on:
+  # O GitHub avisa que execuções "schedule" podem atrasar-se em picos de
+  # carga, sobretudo nos minutos redondos (:00, :10, :20...) -- que é onde
+  # toda a gente agenda. Confirmámos isto na prática: as duas falhas reais
+  # deste workflow foram ambas precedidas por um intervalo de ~33-37 min
+  # sem ping (em vez dos ~10 min esperados), o triplo do normal. Um
+  # deslocamento (:03, :13, :23...) evita o minuto mais congestionado.
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "3-59/10 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -24,4 +30,11 @@ jobs:
       # constante entre tentativas e --retry-all-errors garante que também
       # tentamos de novo em erros de rede transitórios, não só nos códigos
       # HTTP retryable por omissão.
-      - run: curl -fsS --max-time 90 --retry 10 --retry-delay 10 --retry-max-time 180 --retry-all-errors "${{ vars.DEMO_URL }}/api/health"
+      #
+      # 300s (5 min) de orçamento de retries: confirmámos nos logs do Render
+      # que, quando o GitHub atrasa o agendamento e o serviço adormece a
+      # fundo, o container pode demorar vários minutos só a COMEÇAR a
+      # arrancar (não é só o arranque em si, que demora ~10s) -- 180s não
+      # chegou em dois incidentes reais; 300s dá margem sem arriscar colidir
+      # com o próximo ping agendado 10 min depois.
+      - run: curl -fsS --max-time 90 --retry 20 --retry-delay 10 --retry-max-time 300 --retry-all-errors "${{ vars.DEMO_URL }}/api/health"
