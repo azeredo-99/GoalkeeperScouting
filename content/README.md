@@ -11,7 +11,8 @@ Análises com **dados atuais da FotMob** (Liga Portugal 2025/26 e 2026/27), reco
 
 ## Vídeos
 1. [Os números mentem? Rui Silva vs Kaique](guioes/01_os_numeros_mentem_rui_silva_vs_kaique.md)
-2. [Scouting: substituto para o Diogo Costa](guioes/02_scouting_substituto_diogo_costa.md)
+2. [Scouting: substituto para o Diogo Costa (Liga Portugal)](guioes/02_scouting_substituto_diogo_costa.md)
+3. [O guarda-redes do Farioli no mercado estrangeiro](guioes/03_farioli_mercado_estrangeiro.md): modelo de prioridades (`farioli.py`)
 
 ## Métricas
 Calculadas a partir dos totais da FotMob:
