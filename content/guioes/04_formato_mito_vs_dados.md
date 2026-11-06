@@ -62,3 +62,27 @@ Dados: FotMob, Liga Portugal 2025/26 (ver `01_os_numeros_mentem_rui_silva_vs_kai
 Outros episódios da série:
 - "O Diogo Costa é o melhor guarda-redes da Liga?" (80% de defesas, percentil 99, mas golos evitados no percentil 49)
 - "O Porto precisa de um guarda-redes que defenda ou que jogue com os pés?" (o modelo do Farioli)
+
+## 5. O resto do reel (mais 10 capturas)
+
+| Cena | O que fazem | Técnica a reter |
+|---|---|---|
+| "Won by one goal" | Cada golo decisivo aparece como uma pequena peça com o resultado (1-0, 2-1, 3-2); contador 111 vs 142 | **Ver cada ponto de dados**: a amostra torna-se concreta |
+| "Take their goals away" | O guarda-redes sozinho na baliza: "e se tirássemos os golos?" | **Contrafactual**: o que acontecia sem o jogador |
+| "Bicycle vs Juventus: gone" / "Ankara Messi: never happened" / "'Ronaldo Jr': nope" | Golos famosos recriados em 3D e "apagados", com efeito VHS, "◀◀ REWIND", o texto "GONE." e a etiqueta do jogo ("JUVENTUS 0-3 REAL MADRID · UCL 2018") | **Momentos icónicos + humor** ("OUCH") fazem as pessoas reconhecer e partilhar |
+| "Points lost without them" | Barras com a parte perdida a vermelho: −362 vs −370 | Barra **subtrativa** |
+| "Points per goal" | Moedas grandes: 0,39 vs 0,42 | Segunda **normalização** |
+| "Already 4 up" | Marcador "BARÇA 7-0 · ALREADY 4 UP" e a fila de resultados dos fins de semana | **Estado do jogo**: golos com o jogo já ganho ("stat-padding") |
+| "Case closed." | Celebração do vencedor, texto gigante esbatido por trás, luz dourada | **Final com assinatura** |
+
+**Arco completo:** discussão → série → amostra → básico → métrica 1 → normalizar → métrica 2 → contrafactual (com momentos icónicos) → normalizar outra vez → contexto do jogo → veredicto.
+
+### O que já passou para o episódio 01
+- **Contrafactual**, cena 08 "E se…?": "troca-os por um guarda-redes médio". Barra = golos esperados contra (sofridos + evitados), com a parte evitada às riscas menta. Rui Silva 23 sofridos, +3,5 evitados; Kaique 35, +4,9.
+- **Efeito rebobinar** próprio ("◀◀ E SE…?", linhas de vídeo e separação de cor) e **etiqueta de contexto** (equipa · época).
+
+### Para episódios seguintes (precisam de dados jogo a jogo)
+- **Peça por defesa**, com o minuto e o resultado no momento (por exemplo "67' · 1-0")
+- **Estado do jogo:** defesas com o jogo empatado ou a perder, contra defesas com o jogo resolvido (o equivalente do "already 4 up")
+- **Defesas icónicas recriadas**, cada uma com a etiqueta do jogo
+- Fonte possível: a página de cada jogo na FotMob (o mapa de remates), recolhida à mão

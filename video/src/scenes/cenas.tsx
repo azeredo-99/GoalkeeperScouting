@@ -201,3 +201,129 @@ export const CenaVeredicto: React.FC<{ linhas: { metrica: string; vencedor: Joga
     </AbsoluteFill>
   );
 };
+
+// Efeito "rebobinar": linhas de vídeo antigo + rótulo, nos primeiros frames da cena
+export const Rebobinar: React.FC<{ rotulo?: string; duracao?: number }> = ({ rotulo = "◀◀ E SE…?", duracao = 24 }) => {
+  const frame = useCurrentFrame();
+  if (frame > duracao) return null;
+  const op = interpolate(frame, [0, 4, duracao - 6, duracao], [0, 1, 1, 0]);
+  const salto = (frame % 3) * 6 - 6;
+  return (
+    <AbsoluteFill style={{ opacity: op, pointerEvents: "none" }}>
+      <AbsoluteFill
+        style={{
+          background: "repeating-linear-gradient(180deg, rgba(255,255,255,0.07) 0 3px, transparent 3px 7px)",
+          transform: `translateY(${salto}px)`,
+          mixBlendMode: "screen",
+        }}
+      />
+      <AbsoluteFill style={{ background: "rgba(10,15,26,0.35)" }} />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 260,
+          left: 80,
+          fontFamily: MARCA.fonteEtiqueta,
+          fontWeight: 700,
+          fontSize: 72,
+          letterSpacing: 6,
+          color: MARCA.cores.texto,
+          textShadow: `4px 0 ${MARCA.cores.destaque}, -4px 0 #FF4D6D`,
+        }}
+      >
+        {rotulo}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// Etiqueta de contexto (equipa · competição · época)
+export const Contexto: React.FC<{ texto: string }> = ({ texto }) => (
+  <div
+    style={{
+      display: "inline-block",
+      padding: "10px 22px",
+      background: "rgba(10,15,26,0.85)",
+      border: `1px solid ${MARCA.cores.linha}`,
+      borderRadius: 10,
+      fontFamily: MARCA.fonteEtiqueta,
+      fontWeight: 700,
+      fontSize: 28,
+      letterSpacing: 4,
+    }}
+  >
+    {texto}
+  </div>
+);
+
+// Contrafactual: "e se tivessem um guarda-redes médio?"
+// barra inteira = golos esperados contra (xGOT); parte cheia = golos sofridos; o resto = golos evitados
+export const CenaContrafactual: React.FC<{
+  linhas: { jogador: Jogador; contexto: string; sofridos: number; evitados: number }[];
+}> = ({ linhas }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const max = Math.max(...linhas.map((l) => l.sofridos + l.evitados));
+  return (
+    <AbsoluteFill>
+      <Relvado escurecer={0.6} />
+      <div
+        style={{
+          position: "absolute",
+          top: 640,
+          left: 60,
+          right: 60,
+          background: MARCA.cores.cartao,
+          border: `1px solid ${MARCA.cores.linha}`,
+          borderRadius: 22,
+          padding: "34px 36px 40px",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: 26 }}>
+          <Etiqueta tamanho={26}>GOLOS QUE UM GUARDA-REDES MÉDIO SOFRERIA</Etiqueta>
+        </div>
+        {linhas.map((l, i) => {
+          const esperados = l.sofridos + l.evitados;
+          const t = interpolate(frame - 30 - i * 12, [0, 30], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+          const extra = interpolate(frame - 70 - i * 12, [0, 20], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+          const s = spring({ frame: frame - 70 - i * 12, fps, config: { damping: 12 } });
+          const wSofridos = (l.sofridos / max) * 100;
+          const wEvitados = (l.evitados / max) * 100;
+          return (
+            <div key={i} style={{ marginTop: i ? 40 : 0 }}>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+                <Etiqueta cor={l.jogador.cor}>{l.jogador.nome}</Etiqueta>
+                <Etiqueta tamanho={22}>{l.contexto}</Etiqueta>
+              </div>
+              <div style={{ position: "relative", height: 56, marginTop: 12, borderRadius: 28, background: "rgba(255,255,255,0.06)" }}>
+                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${wSofridos * t}%`, background: l.jogador.cor, borderRadius: 28 }} />
+                <div
+                  style={{
+                    position: "absolute",
+                    left: `${wSofridos}%`,
+                    top: 0,
+                    bottom: 0,
+                    width: `${wEvitados * extra}%`,
+                    borderRadius: "0 28px 28px 0",
+                    background: `repeating-linear-gradient(135deg, ${MARCA.cores.destaque} 0 10px, rgba(61,245,176,0.35) 10px 20px)`,
+                  }}
+                />
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12 }}>
+                <div>
+                  <Contador valor={l.sofridos} atraso={30 + i * 12} tamanho={56} />
+                  <Etiqueta tamanho={22}>SOFRIDOS</Etiqueta>
+                </div>
+                <div style={{ textAlign: "right", opacity: s, transform: `scale(${0.6 + s * 0.4})`, transformOrigin: "right center" }}>
+                  <Contador valor={l.evitados} casas={1} sinal atraso={70 + i * 12} tamanho={56} cor={MARCA.cores.destaque} />
+                  <Etiqueta tamanho={22} cor={MARCA.cores.destaque}>EVITADOS</Etiqueta>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <Rebobinar />
+    </AbsoluteFill>
+  );
+};

@@ -4,6 +4,7 @@ import React from "react";
 import { Episodio } from "./tipos";
 import {
   CenaCartoes,
+  CenaContrafactual,
   CenaFrenteAFrente,
   CenaGrelhas,
   CenaNumero,
@@ -105,6 +106,20 @@ export const EP01: Episodio = {
             { valor: D.kaique.ge, casas: 1, sinal: true, rotulo: "GOLOS EVITADOS" },
           ]}
           nota="BASEADO EM xGOT (QUALIDADE DO REMATE À BALIZA)"
+        />
+      ),
+    },
+    {
+      segundos: 6,
+      etiqueta: "E SE…?",
+      titulo: "Com um guarda-redes *médio*",
+      legenda: ["Troca-os por um guarda-redes *médio.*", "O Kaique valeu quase *5 golos.*"],
+      conteudo: (
+        <CenaContrafactual
+          linhas={[
+            { jogador: RUI, contexto: "SPORTING · 2025/26", sofridos: 23, evitados: D.rui.ge },
+            { jogador: KAIQUE, contexto: "NACIONAL · 2025/26", sofridos: 35, evitados: D.kaique.ge },
+          ]}
         />
       ),
     },
