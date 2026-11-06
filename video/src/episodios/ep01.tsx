@@ -2,10 +2,10 @@
 // Dados: FotMob, Liga Portugal 2025/26 (ver content/dados/fotmob_liga_portugal_2025_26.csv)
 import React from "react";
 import { Episodio } from "./tipos";
+import { Cena3DESe, Cena3DFrenteAFrente } from "../tres/cenas3d";
 import {
   CenaCartoes,
   CenaContrafactual,
-  CenaFrenteAFrente,
   CenaGrelhas,
   CenaNumero,
   CenaSerie,
@@ -32,7 +32,8 @@ export const EP01: Episodio = {
       etiqueta: "A DISCUSSÃO",
       titulo: "Quem merece a baliza do *Sporting*?",
       legenda: ["Uns dizem que o *Kaique* é melhor.", "Outros: o *Rui Silva* defende mais."],
-      conteudo: <CenaFrenteAFrente a={RUI} b={KAIQUE} />,
+      conteudo: <Cena3DFrenteAFrente a={RUI} b={KAIQUE} duracao={150} />,
+      topoLegenda: 1400,
     },
     {
       segundos: 3,
@@ -110,10 +111,18 @@ export const EP01: Episodio = {
       ),
     },
     {
-      segundos: 6,
+      segundos: 5,
       etiqueta: "E SE…?",
-      titulo: "Com um guarda-redes *médio*",
-      legenda: ["Troca-os por um guarda-redes *médio.*", "O Kaique valeu quase *5 golos.*"],
+      titulo: "E se fosse um guarda-redes *médio*?",
+      legenda: ["Imagina um remate ao *ângulo.*", "Com um guarda-redes *médio*, era golo."],
+      conteudo: <Cena3DESe guarda={KAIQUE} />,
+      topoLegenda: 1400,
+    },
+    {
+      segundos: 6,
+      etiqueta: "A CONTA",
+      titulo: "Golos que *valeram*",
+      legenda: ["Contra um guarda-redes *médio*…", "…o Kaique valeu quase *5 golos.*"],
       conteudo: (
         <CenaContrafactual
           linhas={[

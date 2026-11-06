@@ -33,8 +33,24 @@ Copia `src/episodios/ep01.tsx` para `ep02.tsx`, muda os dados e as frases, e reg
 2. Em `src/Root.tsx`, dentro do `Video`, acrescenta `<Audio src={staticFile("voz-ep01.mp3")} />` (importado de `remotion`)
 3. Acerta os `segundos` de cada cena e, se quiseres, os inícios exatos de cada frase (`inicios` na `Legenda`)
 
+## Cenas 3D
+Feitas com `@remotion/three` (Three.js + React Three Fiber), em `src/tres/`:
+
+| Ficheiro | O quê |
+|---|---|
+| `Estadio.tsx` | Relvado às faixas, linhas com medidas reais, baliza com rede, painel LED com a marca, bancada com público |
+| `Personagens.tsx` | Guarda-redes feito de formas simples (`mergulho` de 0 a 1, `lado`, `alcance`), bola, câmara controlada por frame, `projetar()` para pôr etiquetas HTML por cima do 3D |
+| `cenas3d.tsx` | `Cena3DFrenteAFrente` (abertura) e `Cena3DESe` (defesa → rebobinar → guarda-redes médio → golo) |
+
+Os remates e mergulhos são ilustrativos, não são lances reais.
+
+O render 3D é mais lento (cerca de 4 minutos para 59 s num ambiente sem placa gráfica). Num computador normal é bem mais rápido.
+Se aparecer "Error creating WebGL context", usa `--gl=swangle`:
+```bash
+npx remotion render Ep01 out/ep01.mp4 --gl=swangle
+```
+
 ## Próximos passos
-- Cenas 3D (bonecos e estádio) com `@remotion/three` (React Three Fiber)
 - Legendas automáticas a partir da voz (`@remotion/install-whisper-cpp`)
 
 ## Render num ambiente sem descarregar o browser

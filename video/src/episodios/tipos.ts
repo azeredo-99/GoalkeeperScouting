@@ -6,6 +6,7 @@ export type Cena = {
   titulo: string; // título da secção; *palavra* = destaque
   legenda: string[]; // frases da voz; *palavra* = destaque
   conteudo: React.ReactNode;
+  topoLegenda?: number; // posição vertical da legenda (px); por defeito 1300
 };
 
 export type Episodio = {

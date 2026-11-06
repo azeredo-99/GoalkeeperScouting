@@ -15,7 +15,7 @@ const Video: React.FC<{ ep: Episodio }> = ({ ep }) => (
           <Moldura capitulo={i + 1} totalCapitulos={ep.cenas.length} etiqueta={c.etiqueta} titulo={c.titulo} fonte={ep.fonte}>
             {c.conteudo}
           </Moldura>
-          <Legenda frases={c.legenda} duracao={dur} />
+          <Legenda frases={c.legenda} duracao={dur} topo={c.topoLegenda} />
         </Series.Sequence>
       );
     })}

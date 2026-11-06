@@ -323,7 +323,6 @@ export const CenaContrafactual: React.FC<{
           );
         })}
       </div>
-      <Rebobinar />
     </AbsoluteFill>
   );
 };

@@ -30,7 +30,11 @@ export const Legenda: React.FC<{ frases: string[]; duracao: number; inicios?: nu
       : p.texto
           .split(" ")
           .filter(Boolean)
-          .forEach((w) => palavras.push({ texto: w, destaque: false })),
+          .forEach((w) => {
+            // pontuação solta (",", ".") cola-se à palavra anterior
+            if (/^[.,;:!?…]+$/.test(w) && palavras.length) palavras[palavras.length - 1].texto += w;
+            else palavras.push({ texto: w, destaque: false });
+          }),
   );
 
   return (
