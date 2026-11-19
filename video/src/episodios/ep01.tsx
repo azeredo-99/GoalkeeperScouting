@@ -2,6 +2,8 @@
 // Dados: FotMob, Liga Portugal 2025/26 (ver content/dados/fotmob_liga_portugal_2025_26.csv)
 import React from "react";
 import { Episodio } from "./tipos";
+import T from "./ep01.texto.json";
+import V from "./ep01.voz.json";
 import { Cena3DESe, Cena3DFrenteAFrente } from "../tres/cenas3d";
 import {
   CenaCartoes,
@@ -26,12 +28,17 @@ const D = {
 export const EP01: Episodio = {
   id: "Ep01",
   fonte: "DADOS: FOTMOB · LIGA PORTUGAL 2025/26",
+  voz: {
+    pasta: "voz/ep01",
+    tempos: V,
+    inicioMinimo: T.map((t) => (t as { inicioMinimo?: number[] }).inicioMinimo),
+  },
   cenas: [
     {
       segundos: 5,
       etiqueta: "A DISCUSSÃO",
       titulo: "Quem merece a baliza do *Sporting*?",
-      legenda: ["Uns dizem que o *Kaique* é melhor.", "Outros: o *Rui Silva* defende mais."],
+      legenda: T[0].legenda,
       conteudo: <Cena3DFrenteAFrente a={RUI} b={KAIQUE} duracao={150} />,
       topoLegenda: 1400,
     },
@@ -39,21 +46,21 @@ export const EP01: Episodio = {
       segundos: 3,
       etiqueta: "EPISÓDIO 01",
       titulo: "",
-      legenda: ["Vamos aos *números.*"],
+      legenda: T[1].legenda,
       conteudo: <CenaSerie episodio="EPISÓDIO 01" tema="RUI SILVA vs KAIQUE" pergunta="QUEM É O N.º 1?" />,
     },
     {
       segundos: 4,
       etiqueta: "A AMOSTRA",
       titulo: "*221* remates à baliza",
-      legenda: ["Todos os remates *enquadrados* da época passada."],
+      legenda: T[2].legenda,
       conteudo: <CenaNumero valor={D.rui.remates + D.kaique.remates} rotulo="REMATES ENQUADRADOS ANALISADOS" />,
     },
     {
       segundos: 6,
       etiqueta: "O BÁSICO",
       titulo: "Remates *defendidos*",
-      legenda: ["Rui Silva: *76* defesas em *99.*", "Kaique: *87* em *122.*"],
+      legenda: T[3].legenda,
       conteudo: (
         <CenaCartoes
           a={RUI}
@@ -74,14 +81,14 @@ export const EP01: Episodio = {
       segundos: 6,
       etiqueta: "PERCENTAGEM",
       titulo: "Defesas *%*",
-      legenda: ["Em percentagem, ganha o *Rui Silva.*", "Parece *resolvido.*"],
+      legenda: T[4].legenda,
       conteudo: <CenaGrelhas a={RUI} b={KAIQUE} pct={[D.rui.pct, D.kaique.pct]} rotulo="DOS REMATES DEFENDIDOS" />,
     },
     {
       segundos: 6,
       etiqueta: "O PROBLEMA",
       titulo: "Nem todos os remates são *iguais*",
-      legenda: ["Um remate ao *ângulo* vale quase um golo.", "Ao *centro*, quase nada."],
+      legenda: T[5].legenda,
       conteudo: (
         <CenaZonasBaliza
           zonas={[
@@ -97,7 +104,7 @@ export const EP01: Episodio = {
       segundos: 6,
       etiqueta: "A MÉTRICA CERTA",
       titulo: "Golos *evitados*",
-      legenda: ["Golos esperados pela qualidade do remate…", "…menos os que *entraram.*"],
+      legenda: T[6].legenda,
       conteudo: (
         <CenaCartoes
           a={RUI}
@@ -114,7 +121,7 @@ export const EP01: Episodio = {
       segundos: 5,
       etiqueta: "E SE…?",
       titulo: "E se fosse um guarda-redes *médio*?",
-      legenda: ["Imagina um remate ao *ângulo.*", "Com um guarda-redes *médio*, era golo."],
+      legenda: T[7].legenda,
       conteudo: <Cena3DESe guarda={KAIQUE} />,
       topoLegenda: 1400,
     },
@@ -122,7 +129,7 @@ export const EP01: Episodio = {
       segundos: 6,
       etiqueta: "A CONTA",
       titulo: "Golos que *valeram*",
-      legenda: ["Contra um guarda-redes *médio*…", "…o Kaique valeu quase *5 golos.*"],
+      legenda: T[8].legenda,
       conteudo: (
         <CenaContrafactual
           linhas={[
@@ -136,7 +143,7 @@ export const EP01: Episodio = {
       segundos: 5,
       etiqueta: "POR JOGO",
       titulo: "Por *90 minutos*",
-      legenda: ["*+0,17* contra *+0,11.*", "Com remates mais *difíceis.*"],
+      legenda: T[9].legenda,
       conteudo: (
         <CenaCartoes
           a={RUI}
@@ -152,7 +159,7 @@ export const EP01: Episodio = {
       segundos: 7,
       etiqueta: "VEREDICTO",
       titulo: "Os dois lados têm *razão*",
-      legenda: ["Só um olha para a métrica *certa.*", "Quem punhas na *baliza?*"],
+      legenda: T[10].legenda,
       conteudo: (
         <CenaVeredicto
           linhas={[

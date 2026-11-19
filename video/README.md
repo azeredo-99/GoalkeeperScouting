@@ -28,10 +28,23 @@ Nos títulos e legendas, `*palavra*` fica em destaque.
 ## Novo episódio
 Copia `src/episodios/ep01.tsx` para `ep02.tsx`, muda os dados e as frases, e regista-o em `src/Root.tsx` (igual ao `Ep01`).
 
-## Voz
-1. Grava a voz a ler as legendas (telemóvel, num sítio sem eco) e guarda-a em `public/voz-ep01.mp3`
-2. Em `src/Root.tsx`, dentro do `Video`, acrescenta `<Audio src={staticFile("voz-ep01.mp3")} />` (importado de `remotion`)
-3. Acerta os `segundos` de cada cena e, se quiseres, os inícios exatos de cada frase (`inicios` na `Legenda`)
+## Voz (IA, grátis e local)
+A voz é gerada com o **Piper** (open source, corre no teu computador, sem custos), com a voz portuguesa `pt_PT-tugão-medium`.
+
+1. Uma vez só:
+   ```bash
+   pip install piper-tts
+   mkdir -p voz/modelos && cd voz/modelos
+   curl -L -o pt_PT-tugao-medium.onnx "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_PT/tug%C3%A3o/medium/pt_PT-tug%C3%A3o-medium.onnx"
+   curl -L -o pt_PT-tugao-medium.onnx.json "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_PT/tug%C3%A3o/medium/pt_PT-tug%C3%A3o-medium.onnx.json"
+   cd ../..
+   ```
+2. O texto está em `src/episodios/ep01.texto.json`: `legenda` é o que aparece no ecrã e `fala` é o que a voz diz (números por extenso, pausas com vírgulas)
+3. Gera a voz: `python voz/gerar_voz.py ep01` (`--velocidade 0.8` fica mais rápida, `1.0` mais lenta)
+4. `npm run render`: cada cena passa a durar o que a voz precisa e as legendas entram ao ritmo da fala
+
+`inicioMinimo` (no JSON) obriga uma frase a esperar, por exemplo para coincidir com o golo na cena 3D.
+Para trocar por uma voz tua ou de outro serviço, basta pôr ficheiros `public/voz/ep01/<cena>_<frase>.wav` e voltar a gerar o `ep01.voz.json` com as durações.
 
 ## Cenas 3D
 Feitas com `@remotion/three` (Three.js + React Three Fiber), em `src/tres/`:

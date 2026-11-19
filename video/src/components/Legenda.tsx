@@ -7,12 +7,13 @@ import { partes } from "./texto";
 // As palavras entre *asteriscos* ganham um bloco menta.
 // Sem voz gravada, o tempo é dividido por igual entre as frases;
 // quando gravares a voz, passa os inícios reais em `inicios` (em frames).
-export const Legenda: React.FC<{ frases: string[]; duracao: number; inicios?: number[]; topo?: number }> = ({
-  frases,
-  duracao,
-  inicios,
-  topo = 1300,
-}) => {
+export const Legenda: React.FC<{
+  frases: string[];
+  duracao: number;
+  inicios?: number[];
+  duracoes?: number[]; // com voz: duração de cada frase, para as palavras entrarem ao ritmo da fala
+  topo?: number;
+}> = ({ frases, duracao, inicios, duracoes, topo = 1300 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const ini = inicios ?? frases.map((_, i) => Math.round((i * duracao) / frases.length));
@@ -37,6 +38,9 @@ export const Legenda: React.FC<{ frases: string[]; duracao: number; inicios?: nu
           }),
   );
 
+  // com voz, as palavras entram ao ritmo da frase; sem voz, de 3 em 3 frames
+  const passo = duracoes ? Math.max(2, Math.min(8, (duracoes[atual] * 0.85) / Math.max(1, palavras.length))) : 3;
+
   return (
     <div
       style={{
@@ -56,7 +60,7 @@ export const Legenda: React.FC<{ frases: string[]; duracao: number; inicios?: nu
       }}
     >
       {palavras.map((w, i) => {
-        const s = spring({ frame: local - i * 3, fps, config: { damping: 14, stiffness: 180 } });
+        const s = spring({ frame: local - i * passo, fps, config: { damping: 14, stiffness: 180 } });
         return (
           <span
             key={`${atual}-${i}`}

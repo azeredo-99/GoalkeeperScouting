@@ -1,0 +1,112 @@
+[
+  {
+    "legenda": [
+      "Uns dizem que o *Kaique* é melhor.",
+      "Outros: o *Rui Silva* defende mais."
+    ],
+    "fala": [
+      "Uns dizem que o Kaique é melhor.",
+      "Outros: o Rui Silva defende mais."
+    ]
+  },
+  {
+    "legenda": [
+      "Vamos aos *números.*"
+    ],
+    "fala": [
+      "Vamos aos números."
+    ]
+  },
+  {
+    "legenda": [
+      "*221* remates enquadrados da época passada."
+    ],
+    "fala": [
+      "Duzentos e vinte e um remates enquadrados, da época passada."
+    ]
+  },
+  {
+    "legenda": [
+      "Rui Silva: *76* defesas em *99* remates.",
+      "Kaique: *87* em *122.*"
+    ],
+    "fala": [
+      "Rui Silva: setenta e seis defesas em noventa e nove remates.",
+      "Kaique: oitenta e sete em cento e vinte e dois."
+    ]
+  },
+  {
+    "legenda": [
+      "Em percentagem, ganha o *Rui Silva.*",
+      "Parece *resolvido.*"
+    ],
+    "fala": [
+      "Em percentagem, ganha o Rui Silva.",
+      "Parece resolvido."
+    ]
+  },
+  {
+    "legenda": [
+      "Um remate ao *ângulo* vale quase um golo.",
+      "Ao *centro*, quase nada."
+    ],
+    "fala": [
+      "Um remate ao ângulo vale quase um golo.",
+      "Ao centro, quase nada."
+    ]
+  },
+  {
+    "legenda": [
+      "Golos esperados pela qualidade do remate…",
+      "…menos os que *entraram.*"
+    ],
+    "fala": [
+      "Golos esperados, pela qualidade do remate,",
+      "menos os que entraram."
+    ]
+  },
+  {
+    "legenda": [
+      "Imagina um remate ao *ângulo.*",
+      "Com um guarda-redes *médio*, era golo."
+    ],
+    "fala": [
+      "Imagina um remate ao ângulo.",
+      "Com um guarda-redes médio, era golo."
+    ],
+    "inicioMinimo": [
+      0,
+      2.1
+    ]
+  },
+  {
+    "legenda": [
+      "Contra um guarda-redes *médio*…",
+      "…o Kaique valeu quase *5 golos.*"
+    ],
+    "fala": [
+      "Contra um guarda-redes médio,",
+      "o Kaique valeu quase cinco golos."
+    ]
+  },
+  {
+    "legenda": [
+      "*+0,17* contra *+0,11* por jogo.",
+      "Com remates mais *difíceis.*"
+    ],
+    "fala": [
+      "Mais zero vírgula dezassete, contra mais zero vírgula onze, por jogo.",
+      "Com remates mais difíceis."
+    ]
+  },
+  {
+    "legenda": [
+      "Só um olha para a métrica *certa.*",
+      "E tu, quem punhas na *baliza?*"
+    ],
+    "fala": [
+      "Só um olha para a métrica certa.",
+      "E tu, quem punhas na baliza?"
+    ]
+  }
+]
